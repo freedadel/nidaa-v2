@@ -63,7 +63,7 @@
 						@enderror
 					</div>
 					<div class="wrap-input100 validate-input" id="state">
-						<select class="input100 @error('state') is-invalid @enderror" name="state" required>
+						<select class="input100 @error('state') is-invalid @enderror" id="state_id" name="state" required>
 							<option value="">اختر الولاية</option>
 							@foreach ($states as $state)
 							<option value="{{$state->id}}">{{$state->name}}</option>
@@ -76,8 +76,20 @@
 							</span>
 						@enderror
 					</div>
+					<div class="wrap-input100 validate-input">
+						<select class="input100 @error('locality_id') is-invalid @enderror" id="locality_id" name="locality_id" required>
+							<option value="">اختر المحلية</option>
+							
+						</select>
+						<span class="focus-input100"></span>
+						@error('locality_id')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
 					<div class="wrap-input100 validate-input" id="path">
-						<input type="text" class="input100 @error('area') is-invalid @enderror" name="area" placeholder="اكتب المنطقة">
+						<input type="text" class="input100 @error('area') is-invalid @enderror" name="area" placeholder="اكتب الحي">
 						<span class="focus-input100"></span>
 						@error('area')
 							<span class="invalid-feedback" role="alert">
@@ -103,6 +115,15 @@
 							</span>
 						@enderror
 					</div>
+					<div class="wrap-input100" id="path">
+						<input type="phone2" class="input100 @error('phone2') is-invalid @enderror" name="phone2" placeholder="رقم هاتف اضافي">
+							<span class="focus-input100"></span>
+							@error('phone2')
+								<span class="invalid-feedback" role="alert">
+									<strong>{{ $message }}</strong>
+								</span>
+							@enderror
+						</div>
 					<div class="wrap-input100 validate-input" id="path">
 						<textarea class="input100 @error('details') is-invalid @enderror" name="details" style="height: 200px" rows="4" placeholder="اكتب التفاصيل"></textarea>
 							<span class="focus-input100"></span>
@@ -150,3 +171,19 @@
 		</div>
 	</div>
 @endsection
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script>
+	$(document).ready(function(){
+		$('#state_id').on('change', e => {
+    	$('#locality_id').empty()
+          $.ajax({
+              url: `/state/${document.getElementById('state_id').value}/localities`,
+              success: data => {
+                  data.localities.forEach(locality =>
+                      $('#locality_id').append(`<option value="${locality.id}">${locality.name}</option>`)
+                  )
+              }
+          })
+          });
+	});
+	</script>

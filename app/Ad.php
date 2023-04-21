@@ -38,6 +38,10 @@ class Ad extends Model
     {
         return $this->belongsTo('App\State');
     }
+    public function locality()
+    {
+        return $this->belongsTo('App\Locality');
+    }
     public function htype()
     {
         return $this->belongsTo('App\Htype');

@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/...', 'HomeController@searchCase');
+Route::get('/...', 'HomeController@admin');
 Route::get('/searchCase', 'HomeController@searchCase')->name('ads.searchCase');
 Route::post('/searchResult', 'HomeController@searchResult')->name('ads.searchResult');
 Route::get('/search', 'PublicController@search')->name('ads.search');
 Route::post('/searchResultPublic', 'PublicController@searchResultPublic')->name('ads.searchResultPublic');
+
+Route::get('/state/{id}/localities', 'PublicController@localities');
 
 Route::get('/', 'PublicController@index')->name('public.index');
 Route::get('/type1', 'PublicController@type1')->name('type1');

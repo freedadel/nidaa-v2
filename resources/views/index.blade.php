@@ -93,7 +93,7 @@ padding-left: .5rem !important;
 							@else
 							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
 							@endif
-							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="{{$ad->area}}">
+							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="@if(!empty($ad->locality_id)) {{$ad->locality->name}} - @endif{{$ad->area}}">
 							@if(!empty($ad->htype))
 							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
 							@else
@@ -110,7 +110,7 @@ padding-left: .5rem !important;
 							<div class="col-9" style="display: inline-block">
 								
 								<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
-									{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif{{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}}
+									{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif @if(!empty($ad->locality_id)) {{\Illuminate\Support\Str::limit($ad->locality->name, 50, $end='...')}} @else {{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}} @endif
 									<br><span style="font-size: x-small;color:#1e7a16 !important">{{$ad->created_at->diffForHumans()}}</span><br>
 									<span style="font-size: x-small;color:#333333 !important">{{\Illuminate\Support\Str::limit($ad->created_at, 50, $end='...')}}</span>
 								</h6>
@@ -194,5 +194,8 @@ padding-left: .5rem !important;
 		var details = document.getElementById('container');
 		details.style.display = "none";
 	}
+
+	
+	
 </script>	
 @endsection
