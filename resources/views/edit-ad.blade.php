@@ -22,13 +22,56 @@
 
 					
 
+					<div class="wrap-input100 validate-input" id="sec_status">
+						<select class="input100 @error('sec_status') is-invalid @enderror" name="sec_status">
+							<option value="">حدد الوضع الأمني ف المنطقة</option>
+							<option value="يوجد اشتباكات" @if($ad->sec_status == "يوجد اشتباكات") selected @endif>يوجد اشتباكات</option>
+							<option value="اشتباكات متقطعة" @if($ad->sec_status == "اشتباكات متقطعة") selected @endif>اشتباكات متقطعة</option>
+							<option value="هادئ" @if($ad->sec_status == "هادئ") selected @endif>هادئ</option>
+							<option value="لا اعرف" @if($ad->sec_status == "لا اعرف") selected @endif>لا اعرف</option>
+						</select>
+						<span class="focus-input100"></span>
+						@error('sec_status')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
 					<div class="wrap-input100 validate-input" id="type">
 						<select class="input100 @error('type') is-invalid @enderror" name="type">
-							<option value="1" @if($ad->type==1) selected @endif>نداء حوجة</option>
-							<option value="2" @if($ad->type==2) selected @endif>اعلان وفرة</option>
+							<option value="1" @if($ad->type == 1) selected @endif>نداء حوجة</option>
+							<option value="2" @if($ad->type == 2) selected @endif>اعلان وفرة</option>
 						</select>
 						<span class="focus-input100"></span>
 						@error('type')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+					<div class="wrap-input100 validate-input" id="htype">
+						<select class="input100 @error('htype') is-invalid @enderror" name="htype" required>
+							<option value="">نوع الحوجة/الوفرة</option>
+							@foreach ($htypes as $htype)
+							<option value="{{$htype->id}}" @if($ad->htype_id == $htype->id) selected @endif>{{$htype->name}}</option>
+							@endforeach
+						</select>
+						<span class="focus-input100"></span>
+						@error('htype')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+					<div class="wrap-input100 validate-input" id="state">
+						<select class="input100 @error('state') is-invalid @enderror" name="state" required>
+							<option value="">اختر الولاية</option>
+							@foreach ($states as $state)
+							<option value="{{$state->id}}" @if($ad->state_id == $state->id) selected @endif>{{$state->name}}</option>
+							@endforeach
+						</select>
+						<span class="focus-input100"></span>
+						@error('state')
 							<span class="invalid-feedback" role="alert">
 								<strong>{{ $message }}</strong>
 							</span>

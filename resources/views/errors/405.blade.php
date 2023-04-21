@@ -13,7 +13,7 @@
 					</div>
 					<br>
 					<span class="login100-form-title" style="font-size: 0.8em">
-						حوجة
+						نداء
 					</span>
 				<table class="table table-striped table-bordered table-hover" id="example2" style="font-size: small">
 					<thead>

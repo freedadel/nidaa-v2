@@ -34,4 +34,12 @@ class Ad extends Model
     {
         return $this->belongsTo('App\User');
     }
+    public function state()
+    {
+        return $this->belongsTo('App\State');
+    }
+    public function htype()
+    {
+        return $this->belongsTo('App\Htype');
+    }
 }

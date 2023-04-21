@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/...', 'HomeController@searchCase');
+Route::get('/searchCase', 'HomeController@searchCase')->name('ads.searchCase');
+Route::post('/searchResult', 'HomeController@searchResult')->name('ads.searchResult');
+Route::get('/search', 'PublicController@search')->name('ads.search');
+Route::post('/searchResultPublic', 'PublicController@searchResultPublic')->name('ads.searchResultPublic');
+
 Route::get('/', 'PublicController@index')->name('public.index');
 Route::get('/type1', 'PublicController@type1')->name('type1');
 Route::get('/type2', 'PublicController@type2')->name('type2');
@@ -51,9 +57,13 @@ Route::put('/users/makeAdmin/{id}', 'UsersController@makeAdmin')->name('pgCompan
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
+Route::get('/public-dashboard', 'PublicController@dashboard')->name('public.dashboard');
 Route::get('/{id}', 'HomeController@edit')->name('edit');
 Route::get('/update-done/{id}', 'HomeController@done')->name('done');
+Route::get('/update-follow/{id}', 'HomeController@follow')->name('follow');
 Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
+
 
 Route::post('facultyUpdate/{id}', 'FacultiesController@facultyUpdate')->name('facultyUpdate');
 Route::post('getByUniversity', 'FacultiesController@getByUniversity')->name('getByUniversity');

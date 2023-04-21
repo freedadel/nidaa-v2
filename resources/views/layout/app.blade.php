@@ -41,6 +41,12 @@
     <script data-ad-client="ca-pub-6582335294052464" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6582335294052464"
      crossorigin="anonymous"></script>
+     <style>
+        .swal-text{
+            text-align: right !important;
+            direction: rtl !important;
+        }
+     </style>
 <!--===============================================================================================-->
 </head>
 <body style="direction: rtl">

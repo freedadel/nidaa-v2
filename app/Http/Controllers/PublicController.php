@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Ad;
-use App\Department;
+use App\Htype;
 use App\Faculty;
 use App\State;
 use Illuminate\Http\Request;
@@ -31,24 +31,72 @@ class PublicController extends Controller
      */
     public function index()
     {
-        $ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        return view('index')->with('ads',$ads);
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
+
+    public function searchResultPublic(Request $request)
+    {
+        if($request->chk == "chk0"){
+            if(!empty($request->word))
+            $ads = Ad::where('status',1)->where('type',$request->type)->where('details','like','%'.$request->word.'%')->orderBy('id','DESC')->get();
+            else
+            $ads = [];
+        }elseif($request->chk == "chk1"){
+            if(!empty($request->htype_id))
+            $ads = Ad::where('status',1)->where('type',$request->type)->where('htype_id',$request->htype_id)->orderBy('id','DESC')->get();
+            else
+            $ads = [];
+        }elseif($request->chk == "chk2"){
+            if(!empty($request->area))
+            $ads = Ad::where('status',1)->where('type',$request->type)->where('area','like','%'.$request->area.'%')->orderBy('id','DESC')->get();
+            else
+            $ads = [];
+        }elseif($request->chk == "chk3"){
+            if(!empty($request->state_id))
+            $ads = Ad::where('status',1)->where('type',$request->type)->where('state_id',$request->state_id)->orderBy('id','DESC')->get();
+            else
+            $ads = [];
+        }
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        return view('results')->with('ads',$ads)->with('all_ads',$all_ads);
+    } 
+
+    public function dashboard()
+    {
+        $ads = Ad::orderBy('id','DESC')->get();
+        $states = State::where('status',1)->get();
+        $htypes = Htype::where('status',1)->get();
+        return view('dashboard')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
+    }
+    
+    public function search()
+    {
+        $ads = Ad::distinct()->get(['area']);
+        $states = State::where('status',1)->get();
+        $htypes = Htype::where('status',1)->get();
+        return view('search-public')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
+    }
 
     public function type1()
     {
-        $ads = Ad::where('status',1)->where('type',1)->orderBy('id','DESC')->get();
-        return view('index')->with('ads',$ads);
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('type',1)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
     public function type2()
     {
-        $ads = Ad::where('status',1)->where('type',2)->orderBy('id','DESC')->get();
-        return view('index')->with('ads',$ads);
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('type',2)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
 
     public function addNew()
     {
-        return view('add-new');
+        $htypes = Htype::where('status',1)->get();
+        $states = State::where('status',1)->get();
+        return view('add-new')->with('htypes',$htypes)->with('states',$states);
     } 
     public function store(Request $request)
     {
@@ -78,6 +126,9 @@ class PublicController extends Controller
                     $ads->area = $request->area;
                     $ads->address = $request->address;
                     $ads->phone = $request->phone;
+                    $ads->state_id = $request->state;
+                    $ads->htype_id = $request->htype;
+                    $ads->sec_status = $request->sec_status;
                     $ads->status = 1;
                     $ads->user_id = 1;
                     $ads->save();

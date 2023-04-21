@@ -11,7 +11,7 @@
 				<form class="login100-form validate-form" method="POST" action="{{ route('ads.store') }}"  enctype = "multipart/form-data">
 					@csrf
 					<div class="row" style="text-align: center">
-					 <div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="مقبول" style="width:100%"></div> 
+					 <div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
 					</div>
 					<span class="login100-form-title mt-3" style="font-size: 0.8em">
 						نداء
@@ -21,7 +21,21 @@
 					</span>
 
 					
-
+					<div class="wrap-input100 validate-input" id="sec_status">
+						<select class="input100 @error('sec_status') is-invalid @enderror" name="sec_status">
+							<option value="">حدد الوضع الأمني ف المنطقة</option>
+							<option value="يوجد اشتباكات">يوجد اشتباكات</option>
+							<option value="اشتباكات متقطعة">اشتباكات متقطعة</option>
+							<option value="هادئ">هادئ</option>
+							<option value="لا اعرف">لا اعرف</option>
+						</select>
+						<span class="focus-input100"></span>
+						@error('sec_status')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
 					<div class="wrap-input100 validate-input" id="type">
 						<select class="input100 @error('type') is-invalid @enderror" name="type">
 							<option value="1">نداء حوجة</option>
@@ -29,6 +43,34 @@
 						</select>
 						<span class="focus-input100"></span>
 						@error('type')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+					<div class="wrap-input100 validate-input" id="htype">
+						<select class="input100 @error('htype') is-invalid @enderror" name="htype" required>
+							<option value="">نوع الحوجة/الوفرة</option>
+							@foreach ($htypes as $htype)
+							<option value="{{$htype->id}}">{{$htype->name}}</option>
+							@endforeach
+						</select>
+						<span class="focus-input100"></span>
+						@error('htype')
+							<span class="invalid-feedback" role="alert">
+								<strong>{{ $message }}</strong>
+							</span>
+						@enderror
+					</div>
+					<div class="wrap-input100 validate-input" id="state">
+						<select class="input100 @error('state') is-invalid @enderror" name="state" required>
+							<option value="">اختر الولاية</option>
+							@foreach ($states as $state)
+							<option value="{{$state->id}}">{{$state->name}}</option>
+							@endforeach
+						</select>
+						<span class="focus-input100"></span>
+						@error('state')
 							<span class="invalid-feedback" role="alert">
 								<strong>{{ $message }}</strong>
 							</span>
@@ -53,7 +95,7 @@
 						@enderror
 					</div>
 					<div class="wrap-input100" id="path">
-					<input type="phone" class="input100 @error('phone') is-invalid @enderror" name="phone" placeholder="رقم الهاتف">
+					<input type="phone" class="input100 @error('phone') is-invalid @enderror" name="phone" placeholder="رقم الهاتف" required>
 						<span class="focus-input100"></span>
 						@error('phone')
 							<span class="invalid-feedback" role="alert">

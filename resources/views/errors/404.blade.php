@@ -9,11 +9,11 @@
 				</div>
 				<form class="login100-form validate-form" action="/">
 					<div class="row" style="text-align: center">
-						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="مقبول" style="width:100%"></div> 
+						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
 					</div>
 					<br>
 					<span class="login100-form-title" style="font-size: 0.8em">
-						حوجة
+						نداء
 					</span>
 				<table class="table table-striped table-bordered table-hover" id="example2" style="font-size: small">
 					<thead>

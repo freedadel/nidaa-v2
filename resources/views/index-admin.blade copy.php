@@ -36,9 +36,6 @@ a{
 					<div class="row mt-3 mb-3">
 						<h6 style="margin: auto"><a href="{{route('ads.searchCase')}}">اضغط هنا للبحث عن حالة</a></h6>
 					</div>
-					<div class="row mt-3 mb-3">
-						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث المفصل</a></h6>
-					</div>
 					@if(count($ads) > 0)
 						@foreach ($ads as $index => $ad)
 						<a href="#" onclick='sw({{$ad->id}})'>
@@ -106,82 +103,46 @@ a{
 		</div>
 	</div>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
+	<script>
 	
-	function about(desc,newdata,phone1,newimg) {
-	
-    var details = document.getElementById('container');
-	var university = document.getElementById('university');
-	var phone = document.getElementById('phone');
-	var data = document.getElementById('data');
-	var img = document.getElementById('newimg');
+		function about(desc,newdata,phone1,newimg) {
 		
-		details.style.display = "block";
-		university.innerText = desc;
-		phone.innerText = phone1;
-		data.innerHTML = newdata;
-		data.style.fontSize = '11px !important';
-
-		img.src='img/ads/'+newimg;
-
-	}
-	
-	function sw(id){
-		var state = document.getElementById('state'+id).value;
-		var htype = document.getElementById('htype'+id).value;
-		var sec_status = document.getElementById('sec_status'+id).value;
-		var area = document.getElementById('area'+id).value;
-		var address = document.getElementById('address'+id).value;
-		var details = document.getElementById('details'+id).value;
-		var type = document.getElementById('type'+id).value;
-		var phone = document.getElementById('phone'+id).value;
-		if(type==1)
-		msg = "warning"
-		else
-		msg = "success"
-		//swal(phone, address+" - "+details, msg);
-
-		swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
-		buttons: {
-			cancel: "اغلاق",
-			catch: {
-			text: "اكتملت",
-			value: "catch",
-			},
-			defeat: {
-			text: "تعديل",
-			value: "defeat",
-			},
-			follow: {
-			text: "تمت المتابعة",
-			value: "follow",
-			}
-		},
-		})
-		.then((value) => {
-		switch (value) {
-		
-			case "defeat":
-			window.location.replace("/"+id);
-			break;
-		
-			case "catch":
-			window.location.replace("/update-done/"+id);
-			break;
-
-			case "follow":
-			window.location.replace("/update-follow/"+id);
-			break;
-		
-			default:
-			
-		}
-		});
-	}
-
-	function clos() {
 		var details = document.getElementById('container');
-		details.style.display = "none";
-	}
-</script>	
-@endsection
+		var university = document.getElementById('university');
+		var phone = document.getElementById('phone');
+		var data = document.getElementById('data');
+		var img = document.getElementById('newimg');
+			
+			details.style.display = "block";
+			university.innerText = desc;
+			phone.innerText = phone1;
+			data.innerHTML = newdata;
+			data.style.fontSize = '11px !important';
+	
+			img.src='img/ads/'+newimg;
+	
+		}
+		
+		function sw(id){
+			var state = document.getElementById('state'+id).value;
+			var htype = document.getElementById('htype'+id).value;
+			var sec_status = document.getElementById('sec_status'+id).value;
+			var area = document.getElementById('area'+id).value;
+			var address = document.getElementById('address'+id).value;
+			var details = document.getElementById('details'+id).value;
+			var type = document.getElementById('type'+id).value;
+			var phone = document.getElementById('phone'+id).value;
+			if(type==1)
+			msg = "warning"
+			else
+			msg = "success"
+			swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
+		}
+	
+		function clos() {
+			var details = document.getElementById('container');
+			details.style.display = "none";
+		}
+	</script>	
+	@endsection
+	

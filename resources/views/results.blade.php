@@ -20,6 +20,13 @@ a{
     border-width:4px !important;
 	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+svg{
+	height: 10px !important;
+}
+.px-4{
+padding-right: .5rem !important;
+padding-left: .5rem !important;
+}
 </style>
 @section('content')
     	<div class="limiter">
@@ -29,103 +36,113 @@ a{
 					<img src="{{asset('img/flag.jpg')}}" alt="IMG">
 				</div>
 				<form class="login100-form validate-form" action="/">
-					<div class="row" style="text-align: center">
-						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="مقبول" style="width:100%"></div> 
+					<!--<div class="row" style="text-align: center">
+						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
+					</div>-->
+					<div class="row mr-1 ml-1">
+						@if(count($all_ads->where('type',1)) > 0)
+						<a href="{{route('type1')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
+						<div class="col-12" style="display: inline-block">
+							
+							 حوجة {{count($all_ads->where('type',1))}}
+						</div>
+						</a>
+						@else
+						<a href="{{route('public.index')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 الكل 
+							</div>
+						</a>
+						@endif
+						@if(count($all_ads->where('type',2)) > 0)
+						<a href="{{route('type2')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
+						<div class="col-12" style="display: inline-block">
+							 وفرة {{count($all_ads->where('type',2))}}
+						</div>
+						</a>
+						@else
+						<a href="{{route('public.index')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 الكل 
+							</div>
+						</a>
+						@endif
+					</div>
+					<div class="row mr-1 ml-1">
+						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 عرض الاحصائيات 
+							</div>
+						</a>
+					</div>
+					<div class="row mt-3 mb-2">
+						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث</a></h6>
 					</div>
 					<br>
-					@if(count($weak) > 0 || count($medium) > 0 || count($strong) > 0)
-						@foreach ($weak as $index => $weak)
-						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 70px">
+					<!--<div class="row">
+						<a href="{{route('login')}}" style="margin: auto">تسجيل الدخول</a>
+					</div>-->
+					<a href="{{route('ads.create')}}"
+					class="login100-form-btn mb-2" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
+						+ اضافة نداء</a>
+					@if(count($ads) > 0)
+						@foreach ($ads as $index => $ad)
+						<a href="#" onclick='sw({{$ad->id}})'>
+							@if(!empty($ad->state_id))
+							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="{{$ad->state->name}}">
+							@else
+							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
+							@endif
+							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="{{$ad->area}}">
+							@if(!empty($ad->htype))
+							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
+							@else
+							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="-">
+							@endif
+							<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}">
+							<input type="hidden" name="address{{$ad->id}}" id="address{{$ad->id}}" value="{{$ad->address}}">
+							<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
+							<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
+							<input type="hidden" name="phone{{$ad->id}}" id="phone{{$ad->id}}" value="{{$ad->phone}}">
+						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 @if($ad->type==1)border-danger @else border-success @endif border-3 shadow" style="height: 70px">
 							<div class="row mr-1 ml-1">
+								
 							<div class="col-9" style="display: inline-block">
-								<h6>
-									{{$index+1}}. <a href="#" onclick='about("{{$weak->name}}",
-									"{!! $weak->about !!}","{{$weak->website}}",
-									"{{$weak->img}}")'>{{\Illuminate\Support\Str::limit($weak->name, 50, $end='...')}}</a></a>
+								
+								<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
+									{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif{{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}}
+									<br><span style="font-size: x-small;color:#1e7a16 !important">{{$ad->created_at->diffForHumans()}}</span><br>
+									<span style="font-size: x-small;color:#333333 !important">{{\Illuminate\Support\Str::limit($ad->created_at, 50, $end='...')}}</span>
 								</h6>
-								<h6>
-									<a href="#" onclick='about("{{$weak->university->name}}",
-										"{!! $weak->university->about !!}","{{$weak->university->website}}",
-										"{{$weak->university->img}}")' style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($weak->university->name, 50, $end='...')}}</a>
+								<h6 class="mt-1">
+									<span style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($ad->details, 50, $end='...')}}</span>
 								</h6>
+								
 							</div>
+						
 							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto">{{$weak->percent}}</h6>
+								<h6 class="text-dark mt-4" style="margin: auto">{{$ad->type==1?"حوجة":"وفرة"}}</h6>
 							</div>
 							</div>
 						</div>
+					</a>
 						@endforeach	
-						@foreach ($medium as $index2 => $medium)
-						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 70px">
-							<div class="row mr-1 ml-1">
-							<div class="col-9" style="display: inline-block">
-								<h6>
-									{{($weak->count() > 0)?($index + $index2 + 2) : ($index2 + 1)}}. 
-									<a href="#" onclick='about("{{$medium->name}}",
-										"{!! $medium->about !!}","{{$medium->website}}",
-										"{{$medium->img}}")'>{{\Illuminate\Support\Str::limit($medium->name, 50, $end='...')}}</a>
-								</h6>
-								<h6>
-									<a href="#" onclick='about("{{$medium->university->name}}",
-										"{!! $medium->university->about !!}","{{$medium->university->website}}",
-										"{{$medium->university->img}}")' style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($medium->university->name, 50, $end='...')}}</a>
-								</h6>
-							</div>
-							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto">{{$medium->percent}}</h6>
-							</div>
-							</div>
-						</div>
-						@endforeach	
-						@foreach ($strong as $index3 => $strong)
-						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 70px">
-							<div class="row mr-1 ml-1">
-							<div class="col-9" style="display: inline-block">
-								<h6>
-									{{($weak->count() > 0 && $medium->count() > 0)?$index + $index2 + $index3 + 3:($medium->count() > 0?$index2 + $index3 + 2:$index3 + 1)}}.
-									<a href="#" onclick='about("{{$strong->name}}",
-									"{!! $strong->about !!}","{{$strong->website}}",
-									"{{$strong->img}}")'>{{\Illuminate\Support\Str::limit($strong->name, 50, $end='...')}}</a>
-								</h6>
-								<h6>
-									<a href="#" onclick='about("{{$strong->university->name}}",
-									"{!! $strong->university->about !!}","{{$strong->university->website}}",
-									"{{$strong->university->img}}")' style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($strong->university->name, 50, $end='...')}}</a>
-								</h6>
-							</div>
-							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto">{{$strong->percent}}</h6>
-							</div>
-							</div>
-						</div>
-						@endforeach
+						
 					@else
-						<h4 class="text-center">عذراً لا يوجد نتائج</h4>
+						<h4 class="text-center">عذراً لا يوجد ما بحثت عنه جرب البحث بطريقة اخرى</h4>
 					@endif
 
 				
-					<div class="container-login100-form-btn">
-					<button class="login100-form-btn" style="font-family: Poppins-Regular;">
-						الرجوع للرئيسية
-					</button>
-					</div>
 					
-					<a href="https://docs.google.com/forms/d/e/1FAIpQLSeHjjYwn7QrI4ax9q19Fa_7QoHKIQ8utSDUOpUgh5IBLFVl0g/viewform?usp=sf_link"
-					class="login100-form-btn" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
-						اضافة تعليق
-					</a>
-					<a href="https://docs.google.com/forms/d/e/1FAIpQLScuLr-PvypFsMWRvsYcw1Kxi_TJG282fkjVbm3kN-3dx6pNVw/viewform?usp=sf_link"
-					class="login100-form-btn" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
-						اضافة معلومات عن كلية
-					</a>
+					
 					<div class="card" id="container" style="width: 18rem;display:none">
-					<img id="img" src="..." class="card-img-top" alt="...">
+					<img id="newimg" src="..." class="card-img-top" alt="...">
 					<div class="card-body">
-						<h5 class="card-title" id="university">الاسم</h5>
+						<h5 class="card-title" id="university">المنطقة</h5>
+						<h5 class="card-title" id="phone">الهاتف</h5>
 						<p class="card-text" style="position: inherit;font-size:11px !important" id="data">حول </p>
-						<a href="#" class="btn btn-warning" id="link" style="width: 100%;margin-top:10px">انتقل للموقع </a>
 						
-						<a href="#" onclick="clos()" class="btn btn-light" style="width: 100%;margin-top:10px">اغلاق</a>
+						<a href="#" onclick="clos()" class="btn btn-danger" style="width: 100%;margin-top:10px">اغلاق</a>
 					</div>
 					</div>
 				</form>
@@ -134,28 +151,41 @@ a{
 			</div>
 		</div>
 	</div>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	
-	function about(name,newdata,url,newimg) {
+	function about(desc,newdata,phone1,newimg) {
 	
     var details = document.getElementById('container');
 	var university = document.getElementById('university');
+	var phone = document.getElementById('phone');
 	var data = document.getElementById('data');
-	var link = document.getElementById('link');
-	var img = document.getElementById('img');
+	var img = document.getElementById('newimg');
 		
 		details.style.display = "block";
-		university.innerText = name;
+		university.innerText = desc;
+		phone.innerText = phone1;
 		data.innerHTML = newdata;
 		data.style.fontSize = '11px !important';
-		link.href = url;
-			if(url === ""){
-				link.style.display = "none";
-			}else{
-				link.style.display = "block";
-			}
-		img.src='img/universities/'+newimg;
 
+		img.src='img/ads/'+newimg;
+
+	}
+	
+	function sw(id){
+		var state = document.getElementById('state'+id).value;
+		var htype = document.getElementById('htype'+id).value;
+		var sec_status = document.getElementById('sec_status'+id).value;
+		var area = document.getElementById('area'+id).value;
+		var address = document.getElementById('address'+id).value;
+		var details = document.getElementById('details'+id).value;
+		var type = document.getElementById('type'+id).value;
+		var phone = document.getElementById('phone'+id).value;
+		if(type==1)
+		msg = "warning"
+		else
+		msg = "success"
+		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
 	}
 
 	function clos() {

@@ -9,7 +9,7 @@
 				</div>
 				<form class="login100-form validate-form" action="/">
 					<div class="row" style="text-align: center">
-					 <div class="col-12" style="text-align: center"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:70px;height:70px;border-radius: 50%;"><p style="font-size:small">مقبول</p></div> 
+					 <div class="col-12" style="text-align: center"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:70px;height:70px;border-radius: 50%;"><p style="font-size:small">نداء</p></div> 
 					</div>
 					<br>
 					<span class="login100-form-title" style="font-size: 0.8em">

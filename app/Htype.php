@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class University extends Model
+class Htype extends Model
 {
-    protected $table = "universities";
+    protected $table = "htypes";
 
     /**
      * The attributes that are mass assignable.
@@ -14,8 +14,8 @@ class University extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'about','website',
-        'status', 'img',
+        'name',
+        'status',
         'user_id',
     ];
 

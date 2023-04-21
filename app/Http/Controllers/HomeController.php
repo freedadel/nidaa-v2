@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Ad;
+use App\State;
+use App\Htype;
 
 class HomeController extends Controller
 {
@@ -26,11 +28,42 @@ class HomeController extends Controller
     {
         $ads = Ad::where('status',1)->orderBy('id','DESC')->get();
         return view('index-admin')->with('ads',$ads);
+    }
+
+    public function searchCase()
+    {
+        return view('search');
+    }
+
+    public function searchResult(Request $request)
+    {
+        if(!empty($request->case_id))
+        {
+            $ads = Ad::where('id',$request->case_id)->where('status',1)->get();
+            return view('index-admin')->with('ads',$ads);
+        }
+    }
+
+    public function dashboard()
+    {
+        $ads = Ad::orderBy('id','DESC')->get();
+        $states = State::where('status',1)->get();
+        $htypes = Htype::where('status',1)->get();
+        return view('dashboard')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
     } 
     public function done($id)
     {
         $ad = Ad::findorFail($id);
         $ad->status = 2;
+        $ad->updated_by = auth()->user()->id;
+        $ad->save();
+        return redirect(route('home'));
+    } 
+    public function follow($id)
+    {
+        $ad = Ad::findorFail($id);
+        $ad->comment ="تمت المتابعة";
+        $ad->updated_by = auth()->user()->id;
         $ad->save();
         return redirect(route('home'));
     } 
@@ -38,7 +71,9 @@ class HomeController extends Controller
     public function edit($id)
     {
         $ad = Ad::findorFail($id);
-        return view('edit-ad')->with('ad',$ad);
+        $states = State::where('status',1)->get();
+        $htypes = Htype::where('status',1)->get();
+        return view('edit-ad')->with('ad',$ad)->with('htypes',$htypes)->with('states',$states);
     } 
 
     public function update(Request $request,$id)
@@ -67,6 +102,7 @@ class HomeController extends Controller
                     $ads->area = $request->area;
                     $ads->address = $request->address;
                     $ads->phone = $request->phone;
+                    $ads->updated_by = auth()->user()->id;
                     $ads->save();
         
                     return redirect(route('home'));

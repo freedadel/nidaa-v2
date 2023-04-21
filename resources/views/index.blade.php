@@ -20,6 +20,13 @@ a{
     border-width:4px !important;
 	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+svg{
+	height: 10px !important;
+}
+.px-4{
+padding-right: .5rem !important;
+padding-left: .5rem !important;
+}
 </style>
 @section('content')
     	<div class="limiter">
@@ -33,11 +40,11 @@ a{
 						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
 					</div>-->
 					<div class="row mr-1 ml-1">
-						@if(count($ads->where('type',1)) > 0)
+						@if(count($all_ads->where('type',1)) > 0)
 						<a href="{{route('type1')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block">
 							
-							 حوجة {{count($ads->where('type',1))}}
+							 حوجة {{count($all_ads->where('type',1))}}
 						</div>
 						</a>
 						@else
@@ -47,10 +54,10 @@ a{
 							</div>
 						</a>
 						@endif
-						@if(count($ads->where('type',2)) > 0)
+						@if(count($all_ads->where('type',2)) > 0)
 						<a href="{{route('type2')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block">
-							 وفرة {{count($ads->where('type',2))}}
+							 وفرة {{count($all_ads->where('type',2))}}
 						</div>
 						</a>
 						@else
@@ -61,16 +68,38 @@ a{
 						</a>
 						@endif
 					</div>
-					<br>
-					<div class="row">
-						<a href="{{route('login')}}" style="margin: auto">تسجيل الدخول</a>
+					<div class="row mr-1 ml-1">
+						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 عرض الاحصائيات 
+							</div>
+						</a>
 					</div>
+					<div class="row mt-3 mb-2">
+						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث</a></h6>
+					</div>
+					<br>
+					<!--<div class="row">
+						<a href="{{route('login')}}" style="margin: auto">تسجيل الدخول</a>
+					</div>-->
 					<a href="{{route('ads.create')}}"
-					class="login100-form-btn" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
-						+ اضافة نداء					</a>
+					class="login100-form-btn mb-2" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
+						+ اضافة نداء</a>
 					@if(count($ads) > 0)
 						@foreach ($ads as $index => $ad)
 						<a href="#" onclick='sw({{$ad->id}})'>
+							@if(!empty($ad->state_id))
+							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="{{$ad->state->name}}">
+							@else
+							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
+							@endif
+							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="{{$ad->area}}">
+							@if(!empty($ad->htype))
+							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
+							@else
+							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="-">
+							@endif
+							<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}">
 							<input type="hidden" name="address{{$ad->id}}" id="address{{$ad->id}}" value="{{$ad->address}}">
 							<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
 							<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
@@ -80,9 +109,9 @@ a{
 								
 							<div class="col-9" style="display: inline-block">
 								
-								<h6>
-									{{$ad->id}}. {{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}}
-									<br>
+								<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
+									{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif{{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}}
+									<br><span style="font-size: x-small;color:#1e7a16 !important">{{$ad->created_at->diffForHumans()}}</span><br>
 									<span style="font-size: x-small;color:#333333 !important">{{\Illuminate\Support\Str::limit($ad->created_at, 50, $end='...')}}</span>
 								</h6>
 								<h6 class="mt-1">
@@ -98,6 +127,9 @@ a{
 						</div>
 					</a>
 						@endforeach	
+						<div class="row" style="margin: auto">
+							<div style="margin:auto;margin-top:20px">{{$ads->render()}}</div>
+						</div>
 					@else
 						<h4 class="text-center">عذراً لا يوجد نداءات</h4>
 					@endif
@@ -143,6 +175,10 @@ a{
 	}
 	
 	function sw(id){
+		var state = document.getElementById('state'+id).value;
+		var htype = document.getElementById('htype'+id).value;
+		var sec_status = document.getElementById('sec_status'+id).value;
+		var area = document.getElementById('area'+id).value;
 		var address = document.getElementById('address'+id).value;
 		var details = document.getElementById('details'+id).value;
 		var type = document.getElementById('type'+id).value;
@@ -151,7 +187,7 @@ a{
 		msg = "warning"
 		else
 		msg = "success"
-		swal(phone, address+" - "+details, msg);
+		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
 	}
 
 	function clos() {
