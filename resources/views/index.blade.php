@@ -23,7 +23,7 @@ a{
 svg{
 	height: 10px !important;
 }
-.px-4{
+.relative .inline-flex .items-center .px-4 .py-2 .-ml-px .text-sm .font-medium .text-gray-500 .bg-white .border .border-gray-300 .cursor-default .leading-5{
 padding-right: .5rem !important;
 padding-left: .5rem !important;
 }

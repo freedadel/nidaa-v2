@@ -40,12 +40,12 @@ padding-left: .5rem !important;
 				</div>
 				
 				<div class="row col-12 mr-1 ml-1">
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
+					<a href="{{route('type1')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block">
 							 {{count($ads->where('type',1))}} حوجة 
 						</div>
 					</a>
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
+					<a href="{{route('type2')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block">
 							 {{count($ads->where('type',2))}} وفرة 
 						</div>
@@ -56,13 +56,13 @@ padding-left: .5rem !important;
 				</div>
 				<div class="row col-12 mr-1 ml-1">
 					@foreach ($htypes as $htype)
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-warning border-3 shadow" style="height: 30px">
+					<a href="{{route('public.byHtype',$htype->id)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-warning border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block;font-size:x-small">
 							 {{count($ads->where('htype_id',$htype->id))}} {{$htype->name}} 
 						</div>
 					</a>
 					@endforeach
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-warning border-3 shadow" style="height: 30px">
+					<a href="{{route('public.byHtype',0)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-warning border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block;font-size:x-small">
 							 {{count($ads->where('htype_id',null))}} غير محدد 
 						</div>
@@ -74,13 +74,13 @@ padding-left: .5rem !important;
 					</div>
 					<div class="row col-12 mr-1 ml-1">
 					
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
+					<a href="{{route('public.byStatus',2)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block;font-size:x-small">
 								{{count($ads->where('status',2))}} حوجات مكتملة
 						</div>
 					</a>
 
-					<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
+					<a href="{{route('public.byStatus',1)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
 						<div class="col-12" style="display: inline-block;font-size:x-small">
 							{{count($ads->where('status',1))}} قيد الانتظار
 						</div>
@@ -93,7 +93,7 @@ padding-left: .5rem !important;
 				</div>
 				<div class="row col-12 mr-1 ml-1">
 				@foreach ($states as $state)
-				<a href="#" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+				<a href="{{route('public.byState',$state->id)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 					<div class="col-12" style="display: inline-block;font-size:x-small">
 						 {{count($ads->where('state_id',$state->id))}} {{$state->name}} 
 					</div>

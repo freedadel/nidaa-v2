@@ -79,6 +79,30 @@ class PublicController extends Controller
         $htypes = Htype::where('status',1)->get();
         return view('dashboard')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
     }
+
+    public function getByState($id)
+    {
+        $state = State::findorFail($id);
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('title',$state->name)->with('all_ads',$all_ads);
+    }
+
+    public function getByHtype($id)
+    {
+        $htype = Htype::findorFail($id);
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('title',$htype->name)->with('all_ads',$all_ads);
+    }
+
+    public function getByStatus($id)
+    {
+        $status = $id==1?"قيد الانتظار":"مكتملة";
+        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',$id)->orderBy('id','DESC')->paginate(500);
+        return view('index')->with('ads',$ads)->with('title',$status)->with('all_ads',$all_ads);
+    }
     
     public function search()
     {

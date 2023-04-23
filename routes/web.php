@@ -30,6 +30,9 @@ Route::get('/state/{id}/localities', 'PublicController@localities');
 Route::get('/', 'PublicController@index')->name('public.index');
 Route::get('/type1', 'PublicController@type1')->name('type1');
 Route::get('/type2', 'PublicController@type2')->name('type2');
+Route::get('/getByState/{id}', 'PublicController@getByState')->name('public.byState');
+Route::get('/getByHtype/{id}', 'PublicController@getByHtype')->name('public.byHtype');
+Route::get('/getByStatus/{id}', 'PublicController@getByStatus')->name('public.byStatus');
 Route::get('/Add-new','PublicController@addNew')->name('ads.create');
 Route::post('/Ads-Save','PublicController@store')->name('ads.store');
 

@@ -13,9 +13,7 @@
 					<div class="row" style="text-align: center">
 					 <div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
 					</div>
-					<span class="login100-form-title mt-3" style="font-size: 0.8em">
-						نداء
-					</span>
+					
 					<span class="login100-form-title mt-1" style="font-size: 0.8em">
 						ادخل البيانات بدقة لمساعدة غيرك
 					</span>
