@@ -33,7 +33,9 @@
           <div class="card-body p-0">
             <!-- Nested Row within Card Body -->
             <div class="row">
-              <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+              <div class="col-lg-6 d-none d-lg-block">
+                <img src="{{asset('img/flag.jpg')}}" alt="IMG">
+              </div>
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
@@ -61,7 +63,7 @@
                       دخول
                     </button>
                     <hr>
-                    <a href="https://wa.me/249921003398?text=السلام عليكم .. ارغب في التطوع في نشر الحالات" style="margin: auto">الرجاء مراسلتنا اذا كنت تريد التطوع</a>
+                    <!--<a href="https://wa.me/249921003398?text=السلام عليكم .. ارغب في التطوع في نشر الحالات" style="margin: auto">الرجاء مراسلتنا اذا كنت تريد التطوع</a>-->
                     
                   </form>
                   <hr>

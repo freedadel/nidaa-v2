@@ -13,12 +13,17 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/...', 'AdminController@admin')->name('admin.index');
+Route::get('/admin-users/{id}', 'AdminController@users')->name('admin.users');
+Route::get('/users-edit/{id}', 'UsersController@edit')->name('admin.edit');
+Route::get('/users-delete/{id}', 'UsersController@delete')->name('admin.delete');
 
-Route::get('/...', 'HomeController@admin');
 Route::get('/searchCase', 'HomeController@searchCase')->name('ads.searchCase');
 Route::post('/searchResult', 'HomeController@searchResult')->name('ads.searchResult');
 Route::get('/search', 'PublicController@search')->name('ads.search');
 Route::post('/searchResultPublic', 'PublicController@searchResultPublic')->name('ads.searchResultPublic');
+
+
 
 Route::get('/state/{id}/localities', 'PublicController@localities');
 
@@ -36,29 +41,21 @@ Route::put('/Universities/unpublish/{id}', 'UniversitiesController@unpublish')->
 Route::put('/Universities/publish/{id}', 'UniversitiesController@publish')->name('Universities.publish');
 
 
-Route::put('/faculity/percent/{id}', 'FacultiesController@percent')->name('faculity.percent');
-Route::resource('/Faculties', 'FacultiesController');
-Route::put('/Faculties/unpublish/{id}', 'FacultiesController@unpublish')->name('Faculties.unpublish');
-Route::put('/Faculties/publish/{id}', 'FacultiesController@publish')->name('Faculties.publish');
 
-Route::resource('/Categories', 'CategoriesController');
-Route::put('/Categories/unpublish/{id}', 'CategoriesController@unpublish')->name('Categories.unpublish');
-Route::put('/Categories/publish/{id}', 'CategoriesController@publish')->name('Categories.publish');
 
 Route::resource('/States', 'StatesController');
 Route::put('/States/unpublish/{id}', 'StatesController@unpublish')->name('States.unpublish');
 Route::put('/States/publish/{id}', 'StatesController@publish')->name('States.publish');
 
-Route::resource('/Departments', 'DepartmentsController');
-Route::put('/Departments/unpublish/{id}', 'DepartmentsController@unpublish')->name('Departments.unpublish');
-Route::put('/Departments/publish/{id}', 'DepartmentsController@publish')->name('Departments.publish');
+
 
 Route::put('/users/reset-password/{id}', 'UsersController@resetPassword')->name('users.reset');
 Route::put('/users/makeUser/{id}', 'UsersController@makeUser')->name('pgCompany.makeUser');
 Route::put('/users/makeAdmin/{id}', 'UsersController@makeAdmin')->name('pgCompany.makeAdmin');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'AdminController@admin')->name('home');
+Route::get('/needs/{id}', 'AdminController@needs')->name('needs');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('/public-dashboard', 'PublicController@dashboard')->name('public.dashboard');
 Route::get('/{id}', 'HomeController@edit')->name('edit');
@@ -66,6 +63,8 @@ Route::get('/update-done/{id}', 'HomeController@done')->name('done');
 Route::get('/update-follow/{id}', 'HomeController@follow')->name('follow');
 Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
 
+Route::get('/getAdsByState/{id}', 'HomeController@getAdsByState')->name('getAdsByState');
+Route::get('/getAdsByHtype/{id}', 'HomeController@getAdsByHtype')->name('getAdsByHtype');
 
 Route::post('facultyUpdate/{id}', 'FacultiesController@facultyUpdate')->name('facultyUpdate');
 Route::post('getByUniversity', 'FacultiesController@getByUniversity')->name('getByUniversity');

@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.admin')
 <style>
 	#container {
   width: 100px;
@@ -8,6 +8,10 @@
   right: auto;
 
   z-index: 10;
+}
+.wrap-login100{
+height: 600px !important;
+overflow-y: scroll !important;
 }
 p{
 	font-size: x-small !important;
@@ -28,17 +32,31 @@ a{
 				<div class="login100-pic js-tilt" data-tilt>
 				</div>
 				<form class="login100-form validate-form" action="/">
-					
+					<div class="row mr-1 ml-1">
+						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 {{$title}} ({{count($ads)}} حالة)
+							</div>
+						</a>
+					</div>
 					<br>
 					<div class="row">
 						<h6 style="margin: auto">مرحبا بك {{auth()->user()->name}}</h6>
 					</div>
-					<div class="row mt-3 mb-3">
-						<h6 style="margin: auto"><a href="{{route('ads.searchCase')}}">اضغط هنا للبحث عن حالة</a></h6>
+					<div class="row mr-1 ml-1 mt-3">
+						<a href="{{route('ads.searchCase')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								اضغط هنا للبحث برقم الحالة
+							</div>
+						</a>
+						<a href="{{route('ads.search')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								اضغط هنا للبحث المفصل
+							</div>
+						</a>
 					</div>
-					<div class="row mt-3 mb-3">
-						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث المفصل</a></h6>
-					</div>
+					
+					<input type="hidden" name="admin" id="admin" value="{{auth()->user()->admin}}">
 					@if(count($ads) > 0)
 						@foreach ($ads as $index => $ad)
 						<a href="#" onclick='sw({{$ad->id}})'>
@@ -75,7 +93,7 @@ a{
 							</div>
 						
 							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto">{{$ad->type==1?"حوجة":"وفرة"}}</h6>
+								<h6 class="text-dark mt-4" style="margin: auto;">{{$ad->type==1?"حوجة":"وفرة"}} @if($ad->status==2) <br><i class="text-success">✓</i> @endif</h6>
 							</div>
 							</div>
 						</div>
@@ -108,25 +126,9 @@ a{
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	
-	function about(desc,newdata,phone1,newimg) {
-	
-    var details = document.getElementById('container');
-	var university = document.getElementById('university');
-	var phone = document.getElementById('phone');
-	var data = document.getElementById('data');
-	var img = document.getElementById('newimg');
-		
-		details.style.display = "block";
-		university.innerText = desc;
-		phone.innerText = phone1;
-		data.innerHTML = newdata;
-		data.style.fontSize = '11px !important';
-
-		img.src='img/ads/'+newimg;
-
-	}
 	
 	function sw(id){
+		var admin = document.getElementById('admin').value;
 		var state = document.getElementById('state'+id).value;
 		var htype = document.getElementById('htype'+id).value;
 		var sec_status = document.getElementById('sec_status'+id).value;
@@ -141,6 +143,8 @@ a{
 		msg = "success"
 		//swal(phone, address+" - "+details, msg);
 
+		if(admin != 3)
+		{
 		swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
 		buttons: {
 			cancel: "اغلاق",
@@ -153,7 +157,7 @@ a{
 			value: "defeat",
 			},
 			follow: {
-			text: "تمت المتابعة",
+			text: "نشر للمتطوعين",
 			value: "follow",
 			}
 		},
@@ -177,6 +181,28 @@ a{
 			
 		}
 		});
+	}
+		else{
+			swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
+		buttons: {
+			cancel: "اغلاق",
+			catch: {
+			text: "اكتملت",
+			value: "catch",
+			}
+		},
+		})
+		.then((value) => {
+		switch (value) {
+			case "catch":
+			window.location.replace("/update-done/"+id);
+			break;
+
+			default:
+		}
+		});
+		}
+
 	}
 
 	function clos() {

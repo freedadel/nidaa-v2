@@ -27,7 +27,21 @@ class HomeController extends Controller
     public function index()
     {
         $ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        return view('index-admin')->with('ads',$ads);
+        return view('index-admin')->with('ads',$ads)->with('title','كل الحالات');
+    }
+
+    public function getAdsByState($id)
+    {
+        $state = State::findorFail($id);
+        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->get();
+        return view('index-admin')->with('ads',$ads)->with('title',$state->name);
+    }
+
+    public function getAdsByHtype($id)
+    {
+        $htype = Htype::findorFail($id);
+        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->get();
+        return view('index-admin')->with('ads',$ads)->with('title',$htype->name);
     }
 
     public function searchCase()
@@ -54,19 +68,44 @@ class HomeController extends Controller
     public function done($id)
     {
         $ad = Ad::findorFail($id);
-        $ad->status = 2;
+        $old = $ad->status;
+        if(auth()->user()->admin !=3)
+        {
+            $ad->status = 2;
+            if(empty($ad->completed_by))
+            $ad->completed_by = auth()->user()->id;
+            
+            $ad->confirmed_by = auth()->user()->id;
+        }
+        else
+        {
+            $ad->status = 4;
+            $ad->completed_by = auth()->user()->id;
+        }
+        
         $ad->updated_by = auth()->user()->id;
         $ad->save();
-        return redirect(route('home'));
+        return redirect(route('needs',$old));
     } 
     public function follow($id)
+    {
+        $ad = Ad::findorFail($id);
+        $ad->comment ="ارسال للمتطوعين بواسطة ".auth()->user()->name;
+        $ad->updated_by = auth()->user()->id;
+        $ad->assigned_by = auth()->user()->id;
+        $ad->status = 3;
+        $ad->save();
+        return redirect(url()->previous());
+    } 
+
+    public function followOld($id)
     {
         $ad = Ad::findorFail($id);
         $ad->comment ="تمت المتابعة";
         $ad->updated_by = auth()->user()->id;
         $ad->save();
         return redirect(route('home'));
-    } 
+    }
 
     public function edit($id)
     {

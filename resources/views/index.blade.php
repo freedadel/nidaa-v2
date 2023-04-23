@@ -93,7 +93,7 @@ padding-left: .5rem !important;
 							@else
 							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
 							@endif
-							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="@if(!empty($ad->locality_id)) {{$ad->locality->name}} - @endif{{$ad->area}}">
+							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="@if(!empty($ad->locality_id)) {{$ad->locality->name}} - @endif {{$ad->area}}">
 							@if(!empty($ad->htype))
 							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
 							@else

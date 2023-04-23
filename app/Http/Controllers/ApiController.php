@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Ad;
 use App\Locality;
+use App\Htype;
 use App\State;
 use App\User;
 use Illuminate\Contracts\Session\Session;
@@ -27,6 +28,12 @@ class ApiController extends Controller
     {
         $states = State::where('status',1)->get();
         return ['total_size'=> count($states),'states'=>$states];
+    }
+
+    public function getHtypes()
+    {
+        $htypes = Htype::where('status',1)->get();
+        return ['total_size'=> count($htypes),'htypes'=>$htypes];
     }
 
     public function getLocalities($id)

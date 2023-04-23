@@ -51,26 +51,54 @@
 </head>
 <body style="direction: rtl">
 	@yield('content')
+    <div class="row" style="margin: auto;text-align:center;background-color:#1f2832">
+        <a href="{{url()->previous()}}" class="col-3 btn btn-warning" style="margin: auto">رجوع</a>
+        <a href="{{route('admin.index')}}" class="col-5 btn btn-warning" style="margin: auto">الرئيسية</a>
+        <a href="#" class="col-3 btn btn-warning" style="margin: auto" data-toggle="modal" data-target="#logoutModal">تسجيل خروج</a>
+    </div>
+
+     <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">تأكيد الخروج</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">هل تريد الخروج فعلاً؟</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">لا</button>
+          <a class="btn btn-danger" href="{{ route('logout') }}"  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">نعم، خروج</a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                  @csrf
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
 <!--===============================================================================================-->	
-	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+	<script src="{{asset('vendor/jquery/jquery-3.2.1.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="vendor/bootstrap/js/popper.js"></script>
-	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+	<script src="{{asset('vendor/bootstrap/js/popper.js')}}"></script>
+	<script src="{{asset('vendor/bootstrap/js/bootstrap.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="vendor/select2/select2.min.js"></script>
+	<script src="{{asset('vendor/select2/select2.min.js')}}"></script>
 <!--===============================================================================================-->
-	<script src="vendor/tilt/tilt.jquery.min.js"></script>
+	<script src="{{asset('vendor/tilt/tilt.jquery.min.js')}}"></script>
 	<script >
 		$('.js-tilt').tilt({
 			scale: 1.1
 		})
 	</script>
 <!--===============================================================================================-->
-	<script src="js/main.js"></script>
-	   <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.css">
-        <script type="text/javascript" charset="utf8" src="css/jquery.dataTables.js"></script>
-        <script src="css/dataTables.buttons.min.js" ></script>
-        <script src="css/jszip.min.js" ></script>
+	<script src="{{asset('js/main.js')}}"></script>
+	   <link rel="stylesheet" type="text/css" href="{{asset('css/jquery.dataTables.css')}}">
+        <script type="text/javascript" charset="utf8" src="{{asset('css/jquery.dataTables.js')}}"></script>
+        <script src="{{asset('css/dataTables.buttons.min.js')}}" ></script>
+        <script src="{{asset('css/jszip.min.js')}}" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" ></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" ></script>
         <script src="https://cdn.datatables.net/buttons/1.6.2/js/buttons.html5.min.js" ></script>
@@ -113,15 +141,6 @@
         swal("نجاح", $msg, "success");
     }
 </script>
-<footer>
-    <div class="row" style="margin: auto;text-align:center">
-        <h6 style="margin: auto;text-align:center">عدد الزوار</h6>
-    </div>
-    <div class="row" style="margin: auto;text-align:center">
-        <a href="https://www.easycounter.com/" style="margin: auto;text-align:center">
-        <img src="https://www.easycounter.com/counter.php?freedoadel2"
-        border="0" alt="عدد الزوار"></a>
-    </div>
-</footer>
+
 
 </html>

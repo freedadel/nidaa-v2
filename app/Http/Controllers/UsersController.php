@@ -47,8 +47,8 @@ class UsersController extends Controller
         $user = new User();
         $this->validate($request, [
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191|unique:users',
-            'password' => 'required|confirmed|min:6',
+            'email' => 'required|string|max:191|unique:users',
+            'password' => 'required|min:6',
         ]);
         if ($request->hasFile('img')) {
             //get filename with extension
@@ -66,17 +66,18 @@ class UsersController extends Controller
         if ($request->hasFile('img')) {
             $user->img = $fileNametoStore;
         } else {
-            $user->img = "profile.jpg";
+            $user->img = "default.jpg";
         }
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->bio = $request->bio;
         $user->user_id = auth()->user()->id;
-        $user->admin = 0;
+        $user->admin = $request->admin;
         $user->password = Hash::make($request['password']);
         $user->save();
-        Session::flash('success', 'You successfully added user');
+        session()->flash('success', 'تم اضافة المستخدم بنجاح');
 
-        return redirect(route('users.index'));
+        return redirect(route('admin.users',$request->admin));
     }
 
     /**
@@ -98,8 +99,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $users = User::all()->where("id", $id);
-        return view('admin.users.edit')->with('users', $users);
+        $user = User::findorFail($id);
+        return view('admin.users.edit')->with('user', $user);
     }
 
     /**
@@ -114,7 +115,7 @@ class UsersController extends Controller
         $user = User::findorFail($id);
         $this->validate($request, [
             'name' => 'required|string|max:191',
-            'email' => 'required|string|email|max:191',
+            'email' => 'required|string|max:191',
         ]);
         if ($request->hasFile('img')) {
             //get filename with extension
@@ -135,16 +136,18 @@ class UsersController extends Controller
 
         if ($request->password) {
             $this->validate($request, [
-                'password' => 'required|confirmed|min:6',
+                'password' => 'required|min:6',
             ]);
             $user->password = Hash::make($request['password']);
         }
         $user->name = $request->name;
+        $user->bio = $request->bio;
         $user->email = $request->email;
+        $user->admin = $request->admin;
         $user->save();
-        Session::flash('Success', 'Updated Successfully');
+        Session::flash('Success', 'تم تحديث البيانات');
 
-        return redirect(route('users.index'));
+        return redirect(route('admin.users',$user->admin));
     }
 
     /**
@@ -153,6 +156,14 @@ class UsersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function delete($id)
+    {
+        $user = User::find($id);
+        $user->status = 2;
+        $user->save();
+        Session::flash('success', 'تم حذف المستخدم');
+        return redirect(route('admin.users',$user->admin));
+    }
     public function destroy($id)
     {
         $user = User::findorFail($id);
