@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ Route::post('/searchResultPublic', 'PublicController@searchResultPublic')->name(
 
 
 
-Route::get('/state/{id}/localities', 'PublicController@localities');
+//Route::get('/state/{id}/localities', 'PublicController@localities');
 
 Route::get('/', 'PublicController@index')->name('public.index');
 Route::get('/type1', 'PublicController@type1')->name('type1');
@@ -37,18 +38,21 @@ Route::get('/Add-new','PublicController@addNew')->name('ads.create');
 Route::post('/Ads-Save','PublicController@store')->name('ads.store');
 
 Route::post('/Result','PublicController@result')->name('Public.result');
-Route::get('/admin', 'AdminController@index');
-Route::resource('/users', 'UsersController');
-Route::resource('/Universities', 'UniversitiesController');
-Route::put('/Universities/unpublish/{id}', 'UniversitiesController@unpublish')->name('Universities.unpublish');
-Route::put('/Universities/publish/{id}', 'UniversitiesController@publish')->name('Universities.publish');
+Route::get('/admin', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
+Route::get('/report', 'HomeController@report');
+
+//Route::resource('/users', 'UsersController');
+// Route::resource('/Universities', 'UniversitiesController');
+// Route::put('/Universities/unpublish/{id}', 'UniversitiesController@unpublish')->name('Universities.unpublish');
+// Route::put('/Universities/publish/{id}', 'UniversitiesController@publish')->name('Universities.publish');
 
 
 
 
-Route::resource('/States', 'StatesController');
-Route::put('/States/unpublish/{id}', 'StatesController@unpublish')->name('States.unpublish');
-Route::put('/States/publish/{id}', 'StatesController@publish')->name('States.publish');
+// Route::resource('/States', 'StatesController');
+// Route::put('/States/unpublish/{id}', 'StatesController@unpublish')->name('States.unpublish');
+// Route::put('/States/publish/{id}', 'StatesController@publish')->name('States.publish');
 
 
 
@@ -57,11 +61,11 @@ Route::put('/users/makeUser/{id}', 'UsersController@makeUser')->name('pgCompany.
 Route::put('/users/makeAdmin/{id}', 'UsersController@makeAdmin')->name('pgCompany.makeAdmin');
 Auth::routes();
 
-Route::get('/home', 'AdminController@admin')->name('home');
+//Route::get('/home', 'AdminController@admin')->name('home');
 Route::get('/needs/{id}', 'AdminController@needs')->name('needs');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('/public-dashboard', 'PublicController@dashboard')->name('public.dashboard');
-Route::get('/{id}', 'HomeController@edit')->name('edit');
+//Route::get('/{id}', 'HomeController@edit')->name('edit');
 Route::get('/update-done/{id}', 'HomeController@done')->name('done');
 Route::get('/update-follow/{id}', 'HomeController@follow')->name('follow');
 Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
@@ -69,9 +73,34 @@ Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
 Route::get('/getAdsByState/{id}', 'HomeController@getAdsByState')->name('getAdsByState');
 Route::get('/getAdsByHtype/{id}', 'HomeController@getAdsByHtype')->name('getAdsByHtype');
 
-Route::post('facultyUpdate/{id}', 'FacultiesController@facultyUpdate')->name('facultyUpdate');
-Route::post('getByUniversity', 'FacultiesController@getByUniversity')->name('getByUniversity');
+// Route::post('facultyUpdate/{id}', 'FacultiesController@facultyUpdate')->name('facultyUpdate');
+// Route::post('getByUniversity', 'FacultiesController@getByUniversity')->name('getByUniversity');
 
 Route::get('my-captcha', 'HomeController@myCaptcha')->name('myCaptcha');
 Route::post('my-captcha', 'HomeController@myCaptchaPost')->name('myCaptcha.post');
 Route::get('refresh_captcha', 'HomeController@refreshCaptcha')->name('refresh_captcha');
+Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', 'HomeController@index')->name('admin.index');
+
+//Auth::routes();
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::get('/states', 'homeController@index')->name('states.index');
+
+
+Route::resource('states', '\App\Http\Controllers\StateController');
+
+
+Route::resource('users', '\App\Http\Controllers\UserController');
+
+
+Route::resource('calls', '\App\Http\Controllers\CallController');
+
+
+Route::resource('roles', '\App\Http\Controllers\RoleController');
+
+
+Route::resource('permissions', '\App\Http\Controllers\PermissionController');

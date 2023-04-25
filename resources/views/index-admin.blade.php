@@ -1,4 +1,4 @@
-@extends('layout.admin')
+@extends('layout.app')
 <style>
 	#container {
   width: 100px;
@@ -8,10 +8,6 @@
   right: auto;
 
   z-index: 10;
-}
-.wrap-login100{
-height: 600px !important;
-overflow-y: scroll !important;
 }
 p{
 	font-size: x-small !important;
@@ -32,31 +28,14 @@ a{
 				<div class="login100-pic js-tilt" data-tilt>
 				</div>
 				<form class="login100-form validate-form" action="/">
-					<div class="row mr-1 ml-1">
-						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								 {{$title}} ({{count($ads)}} حالة)
-							</div>
-						</a>
-					</div>
+					
 					<br>
 					<div class="row">
 						<h6 style="margin: auto">مرحبا بك {{auth()->user()->name}}</h6>
 					</div>
-					<div class="row mr-1 ml-1 mt-3">
-						<a href="{{route('ads.searchCase')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث برقم الحالة
-							</div>
-						</a>
-						<a href="{{route('ads.search')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث المفصل
-							</div>
-						</a>
+					<div class="row mt-3 mb-3">
+						<h6 style="margin: auto"><a href="{{route('ads.searchCase')}}">اضغط هنا للبحث عن حالة</a></h6>
 					</div>
-					
-					<input type="hidden" name="admin" id="admin" value="{{auth()->user()->admin}}">
 					@if(count($ads) > 0)
 						@foreach ($ads as $index => $ad)
 						<a href="#" onclick='sw({{$ad->id}})'>
@@ -93,7 +72,7 @@ a{
 							</div>
 						
 							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto;">{{$ad->type==1?"حوجة":"وفرة"}} @if($ad->status==2) <br><i class="text-success">✓</i> @endif</h6>
+								<h6 class="text-dark mt-4" style="margin: auto">{{$ad->type==1?"حوجة":"وفرة"}}</h6>
 							</div>
 							</div>
 						</div>
@@ -124,90 +103,46 @@ a{
 		</div>
 	</div>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script>
+	<script>
 	
-	
-	function sw(id){
-		var admin = document.getElementById('admin').value;
-		var state = document.getElementById('state'+id).value;
-		var htype = document.getElementById('htype'+id).value;
-		var sec_status = document.getElementById('sec_status'+id).value;
-		var area = document.getElementById('area'+id).value;
-		var address = document.getElementById('address'+id).value;
-		var details = document.getElementById('details'+id).value;
-		var type = document.getElementById('type'+id).value;
-		var phone = document.getElementById('phone'+id).value;
-		if(type==1)
-		msg = "warning"
-		else
-		msg = "success"
-		//swal(phone, address+" - "+details, msg);
-
-		if(admin != 3)
-		{
-		swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
-		buttons: {
-			cancel: "اغلاق",
-			catch: {
-			text: "اكتملت",
-			value: "catch",
-			},
-			defeat: {
-			text: "تعديل",
-			value: "defeat",
-			},
-			follow: {
-			text: "نشر للمتطوعين",
-			value: "follow",
-			}
-		},
-		})
-		.then((value) => {
-		switch (value) {
+		function about(desc,newdata,phone1,newimg) {
 		
-			case "defeat":
-			window.location.replace("/"+id);
-			break;
-		
-			case "catch":
-			window.location.replace("/update-done/"+id);
-			break;
-
-			case "follow":
-			window.location.replace("/update-follow/"+id);
-			break;
-		
-			default:
-			
-		}
-		});
-	}
-		else{
-			swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
-		buttons: {
-			cancel: "اغلاق",
-			catch: {
-			text: "اكتملت",
-			value: "catch",
-			}
-		},
-		})
-		.then((value) => {
-		switch (value) {
-			case "catch":
-			window.location.replace("/update-done/"+id);
-			break;
-
-			default:
-		}
-		});
-		}
-
-	}
-
-	function clos() {
 		var details = document.getElementById('container');
-		details.style.display = "none";
-	}
-</script>	
-@endsection
+		var university = document.getElementById('university');
+		var phone = document.getElementById('phone');
+		var data = document.getElementById('data');
+		var img = document.getElementById('newimg');
+			
+			details.style.display = "block";
+			university.innerText = desc;
+			phone.innerText = phone1;
+			data.innerHTML = newdata;
+			data.style.fontSize = '11px !important';
+	
+			img.src='img/ads/'+newimg;
+	
+		}
+		
+		function sw(id){
+			var state = document.getElementById('state'+id).value;
+			var htype = document.getElementById('htype'+id).value;
+			var sec_status = document.getElementById('sec_status'+id).value;
+			var area = document.getElementById('area'+id).value;
+			var address = document.getElementById('address'+id).value;
+			var details = document.getElementById('details'+id).value;
+			var type = document.getElementById('type'+id).value;
+			var phone = document.getElementById('phone'+id).value;
+			if(type==1)
+			msg = "warning"
+			else
+			msg = "success"
+			swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
+		}
+	
+		function clos() {
+			var details = document.getElementById('container');
+			details.style.display = "none";
+		}
+	</script>	
+	@endsection
+	

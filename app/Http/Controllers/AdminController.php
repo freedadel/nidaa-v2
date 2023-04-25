@@ -9,7 +9,7 @@ use App\User;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class AdminController extends AppBaseController
 {
     /**
      * Create a new controller instance.

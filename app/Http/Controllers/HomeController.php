@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 use App\Ad;
 use App\State;
 use App\Htype;
+use App\User;
+use Illuminate\Contracts\Session\Session;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
-class HomeController extends Controller
+class HomeController extends AppBaseController
 {
     /**
      * Create a new controller instance.
@@ -22,131 +26,70 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        return view('index-admin')->with('ads',$ads)->with('title','كل الحالات');
-    }
+        // if(auth()->user()->admin == 1)
+        // {
+            $ads2 = Ad::where('htype_id',1)->take(10)->orderBy('id','DESC')->get();
+            $ads1 = Ad::where('htype_id',2)->take(10)->orderBy('id','DESC')->get();
 
-    public function getAdsByState($id)
-    {
-        $state = State::findorFail($id);
-        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->get();
-        return view('index-admin')->with('ads',$ads)->with('title',$state->name);
+            $ads1_count = Ad::where('htype_id',1)->orderBy('id','DESC')->count();
+            $ads2_count = Ad::where('htype_id',2)->orderBy('id','DESC')->count();
+            $states = State::where('status',1)->get();
+            $htypes = Htype::where('status',1)->get();
+            $users = User::where('status',1)->get();
+            return view('home')
+            ->with('ads1_count',$ads1_count)
+            ->with('ads2_count',$ads2_count)
+            ->with('ads1',$ads1)
+            ->with('ads2',$ads2)
+            ->with('htypes',$htypes)
+            ->with('states',$states)
+            ->with('users',$users);
+        // }
+        // elseif(auth()->user()->admin == 2)
+        // {
+        //     $ads = Ad::orderBy('id','DESC')->get();
+        //     $states = State::where('status',1)->get();
+        //     $htypes = Htype::where('status',1)->get();
+        //     $users = User::where('status',1)->get();
+        //     return view('home')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states)->with('users',$users);
+        // }
+        // elseif(auth()->user()->admin == 3)
+        // {
+        //     //return redirect(route('needs',3));
+        // }
+      // return view('home');
     }
+    public function report()
+    {
 
-    public function getAdsByHtype($id)
-    {
-        $htype = Htype::findorFail($id);
-        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->get();
-        return view('index-admin')->with('ads',$ads)->with('title',$htype->name);
-    }
 
-    public function searchCase()
-    {
-        return view('search');
-    }
+        $date = Carbon::now()->subDays(30);
 
-    public function searchResult(Request $request)
-    {
-        if(!empty($request->case_id))
-        {
-            $ads = Ad::where('id',$request->case_id)->where('status',1)->get();
-            return view('index-admin')->with('ads',$ads);
-        }
-    }
-
-    public function dashboard()
-    {
-        $ads = Ad::orderBy('id','DESC')->get();
-        $states = State::where('status',1)->get();
-        $htypes = Htype::where('status',1)->get();
-        return view('dashboard')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
-    } 
-    public function done($id)
-    {
-        $ad = Ad::findorFail($id);
-        $old = $ad->status;
-        if(auth()->user()->admin !=3)
-        {
-            $ad->status = 2;
-            if(empty($ad->completed_by))
-            $ad->completed_by = auth()->user()->id;
-            
-            $ad->confirmed_by = auth()->user()->id;
-        }
-        else
-        {
-            $ad->status = 4;
-            $ad->completed_by = auth()->user()->id;
-        }
+        // First, get the data as an array
+        $data = DB::table('ads')
+                        ->select(DB::raw('DATE(created_at) as date'), 'htype_id', DB::raw('COUNT(*) as total'))
+                        ->where('created_at', '>=', $date)
+                        ->groupBy('date', 'htype_id')
+                        ->get()
+                        ->toArray();
         
-        $ad->updated_by = auth()->user()->id;
-        $ad->save();
-        return redirect(route('needs',$old));
-    } 
-    public function follow($id)
-    {
-        $ad = Ad::findorFail($id);
-        $ad->comment ="ارسال للمتطوعين بواسطة ".auth()->user()->name;
-        $ad->updated_by = auth()->user()->id;
-        $ad->assigned_by = auth()->user()->id;
-        $ad->status = 3;
-        $ad->save();
-        return redirect(url()->previous());
-    } 
-
-    public function followOld($id)
-    {
-        $ad = Ad::findorFail($id);
-        $ad->comment ="تمت المتابعة";
-        $ad->updated_by = auth()->user()->id;
-        $ad->save();
-        return redirect(route('home'));
+        // Next, pivot the data using Laravel's Collection methods
+        $pivotedData = collect($data)->groupBy('date')->map(function ($item) {
+            return [
+                'date' => $item[0]->date,
+                'H' => $item->firstWhere('htype_id', 1)->total ?? 0,
+                'W' => $item->firstWhere('htype_id',2)->total ?? 0,
+            ];
+        })->values()->toArray();
+    
+        // Return JSON response
+        return response()->json([
+            'data' => $pivotedData,
+        ]);
+       return view('home');
     }
-
-    public function edit($id)
-    {
-        $ad = Ad::findorFail($id);
-        $states = State::where('status',1)->get();
-        $htypes = Htype::where('status',1)->get();
-        return view('edit-ad')->with('ad',$ad)->with('htypes',$htypes)->with('states',$states);
-    } 
-
-    public function update(Request $request,$id)
-    {
-        if($request->result == $request->value1 + $request->value2)
-        {
-                $ads = Ad::findorFail($id);
-                if ($request->hasFile('img')) {
-                        //get filename with extension
-                        $filenameWithExt = $request->file('img')->getClientOriginalName();
-                        //get just filename
-                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        //get just extension
-                        $extension = $request->file('img')->getClientOriginalExtension();
-                        //create filename to store
-                        $fileNametoStore = $filename . '_' . time() . '.' . $extension;
-                        //upload image
-                        $path = $request->file('img')->move(public_path('img/ads'), $fileNametoStore);
-                        //$path = $request->file('img')->storeAs('public/img/market/thumbnail/', $fileNametoStore);
-                    }
-                    if ($request->hasFile('img')) {
-                        $ads->img = $fileNametoStore;
-                    } 
-                    $ads->type = $request->type;
-                    $ads->details = $request->details;
-                    $ads->area = $request->area;
-                    $ads->address = $request->address;
-                    $ads->phone = $request->phone;
-                    $ads->updated_by = auth()->user()->id;
-                    $ads->save();
-        
-                    return redirect(route('home'));
-            
-        }
-
-      }
 }

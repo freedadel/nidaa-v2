@@ -72,6 +72,7 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
             $request->setSessionFactory(function () use (&$sess, $request) {
                 if (!$sess) {
                     $sess = $this->getSession();
+                    $request->setSession($sess);
 
                     /*
                      * For supporting sessions in php runtime with runners like roadrunner or swoole, the session
@@ -200,10 +201,11 @@ abstract class AbstractSessionListener implements EventSubscriberInterface, Rese
         }
 
         if ($autoCacheControl) {
+            $maxAge = $response->headers->hasCacheControlDirective('public') ? 0 : (int) $response->getMaxAge();
             $response
-                ->setExpires(new \DateTime())
+                ->setExpires(new \DateTimeImmutable('+'.$maxAge.' seconds'))
                 ->setPrivate()
-                ->setMaxAge(0)
+                ->setMaxAge($maxAge)
                 ->headers->addCacheControlDirective('must-revalidate');
         }
 
