@@ -48,30 +48,32 @@ class PublicController extends Controller
 
     public function searchResultPublic(Request $request)
     {
-        if($request->chk == "chk0"){
-            if(!empty($request->word))
-            $ads = Ad::where('status',1)->where('type',$request->type)->where('details','like','%'.$request->word.'%')->orderBy('id','DESC')->get();
-            else
-            $ads = [];
-        }elseif($request->chk == "chk1"){
-            if(!empty($request->htype_id))
-            $ads = Ad::where('status',1)->where('type',$request->type)->where('htype_id',$request->htype_id)->orderBy('id','DESC')->get();
-            else
-            $ads = [];
-        }elseif($request->chk == "chk2"){
-            if(!empty($request->area))
-            $ads = Ad::where('status',1)->where('type',$request->type)->where('area','like','%'.$request->area.'%')->orderBy('id','DESC')->get();
-            else
-            $ads = [];
-        }elseif($request->chk == "chk3"){
-            if(!empty($request->state_id))
-            $ads = Ad::where('status',1)->where('type',$request->type)->where('state_id',$request->state_id)->orderBy('id','DESC')->get();
-            else
-            $ads = [];
+        $filter = $request->all();
+        $query = Ad::where('status', 1);
+        if (isset($filter['word'])) {
+            $query->where('details', 'like', '%' . $filter['word'] . '%');
         }
-        $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        return view('results')->with('ads',$ads)->with('all_ads',$all_ads);
-    } 
+    
+        if (isset($filter['htype_id']) && $filter['htype_id'] != "null") {
+            $query->where('htype_id', $filter['htype_id']);
+        }
+    
+        if (isset($filter['area']) && $filter['area'] != "null") {
+            $query->where('locality_id', $filter['area'] );
+        }
+    
+        if (isset($filter['state_id']) && $filter['state_id'] != "null") {
+            $query->where('state_id', $filter['state_id']);
+        }
+    
+        if (isset($filter['type']) && $filter['type'] != "null") {
+            $query->where('type', $filter['type']);
+        }
+    
+        $all_ads = $query->orderBy('id', 'DESC')->get();
+    
+        return view('results')->with('ads', $all_ads)->with('all_ads', $all_ads);
+    }
 
     public function dashboard()
     {
@@ -107,10 +109,15 @@ class PublicController extends Controller
     
     public function search()
     {
-        $ads = Ad::distinct()->get(['area']);
+        $localities = Locality::where('status',1)->get();
         $states = State::where('status',1)->get();
+<<<<<<< HEAD
         $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
         return view('search-public')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
+=======
+        $htypes = Htype::where('status',1)->get();
+        return view('search-public')->with('localities',$localities)->with('htypes',$htypes)->with('states',$states);
+>>>>>>> f7285f5189064afcb20ad485ea124f5da6d8b54c
     }
 
     public function type1()
