@@ -38,8 +38,12 @@
 					<div class="wrap-input100 validate-input" id="admin">
 						<select class="input100 @error('admin') is-invalid @enderror" name="admin">
 							<option value="">اختر الصلاحيات</option>
-							@if(auth()->user()->admin ==1)
+							@if(auth()->user()->email == "0921003398" || auth()->user()->email == "0923734194" || 
+							auth()->user()->email == "0920996316" || auth()->user()->email == "0110012620" ||
+							auth()->user()->email == "0925687117")
 							<option value="1" @if($user->admin == 1) selected @endif>مشرف</option>
+							<option value="2" @if($user->admin == 2) selected @endif>مشغل</option>
+							@elseif(auth()->user()->admin == 1)
 							<option value="2" @if($user->admin == 2) selected @endif>مشغل</option>
 							@endif
 							<option value="3" @if($user->admin == 3) selected @endif>متطوع</option>

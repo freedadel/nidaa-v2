@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Ad;
 use App\State;
 use App\Htype;
+use App\Volunteer;
 
 class HomeController extends Controller
 {
@@ -26,21 +27,21 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $ads = Ad::where('status',1)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->orderBy('id','DESC')->paginate(50);
         return view('index-admin')->with('ads',$ads)->with('title','كل الحالات');
     }
 
     public function getAdsByState($id)
     {
         $state = State::findorFail($id);
-        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->paginate(50);
         return view('index-admin')->with('ads',$ads)->with('title',$state->name);
     }
 
     public function getAdsByHtype($id)
     {
         $htype = Htype::findorFail($id);
-        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->get();
+        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->paginate(50);
         return view('index-admin')->with('ads',$ads)->with('title',$htype->name);
     }
 
@@ -53,7 +54,7 @@ class HomeController extends Controller
     {
         if(!empty($request->case_id))
         {
-            $ads = Ad::where('id',$request->case_id)->where('status',1)->get();
+            $ads = Ad::where('id',$request->case_id)->where('status',1)->paginate(50);
             return view('index-admin')->with('ads',$ads);
         }
     }
@@ -91,10 +92,39 @@ class HomeController extends Controller
     {
         $ad = Ad::findorFail($id);
         $ad->comment ="ارسال للمتطوعين بواسطة ".auth()->user()->name;
-        $ad->updated_by = auth()->user()->id;
         $ad->assigned_by = auth()->user()->id;
         $ad->status = 3;
         $ad->save();
+        return redirect(url()->previous());
+    } 
+
+    public function reserve($id)
+    {
+        $ad = Ad::findorFail($id);
+        $ad->comment ="تم الحجز بواسطة ".auth()->user()->name;
+        $ad->updated_by = auth()->user()->id;
+        $ad->status = 5;
+        $ad->save();
+        return redirect(url()->previous());
+    }
+    
+    public function reserveBack($id)
+    {
+        $ad = Ad::findorFail($id);
+        $ad->comment ="تم فك الحجز بواسطة ".auth()->user()->name;
+        $ad->updated_by = auth()->user()->id;
+        $ad->status = 3;
+        $ad->save();
+        return redirect(url()->previous());
+    }
+
+    public function archive($id)
+    {
+        $vol = Volunteer::findorFail($id);
+        $vol->user_id = auth()->user()->id;
+        $vol->confirmed_by = auth()->user()->id;
+        $vol->status = 2;
+        $vol->save();
         return redirect(url()->previous());
     } 
 

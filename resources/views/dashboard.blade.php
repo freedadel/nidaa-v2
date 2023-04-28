@@ -85,6 +85,12 @@ padding-left: .5rem !important;
 							{{count($ads->where('status',1))}} قيد الانتظار
 						</div>
 					</a>
+
+					<a href="{{route('public.byStatus',3)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
+						<div class="col-12" style="display: inline-block;font-size:x-small">
+							{{count($ads->where('status','!=',2)->where('status','!=',1))}} قيد الإجراء
+						</div>
+					</a>
 					
 					</div>
 

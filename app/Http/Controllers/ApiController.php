@@ -70,9 +70,9 @@ class ApiController extends Controller
             $ads->address = $request->address;
             $ads->phone = $request->phone;
             $ads->phone2 = $request->phone2;
-            $ads->state_id = $request->state;
+            $ads->state_id = $request->state_id;
             $ads->locality_id = $request->locality_id;
-            $ads->htype_id = $request->htype;
+            $ads->htype_id = $request->htype_id;
             $ads->sec_status = $request->sec_status;
             $ads->status = 1;
             $ads->user_id = 2;

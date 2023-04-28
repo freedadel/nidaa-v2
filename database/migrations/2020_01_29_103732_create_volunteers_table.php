@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAdsTable extends Migration
+class CreateVolunteersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,24 +13,20 @@ class CreateAdsTable extends Migration
      */
     public function up()
     {
-        Schema::create('ads', function (Blueprint $table) {
+        Schema::create('volunteers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('type');
-            $table->integer('state_id');
+            $table->string('name');
+            $table->integer('place');
+            $table->string('country')->nullable();
+            $table->integer('state_id')->nullable();
             $table->integer('locality_id')->nullable();
             $table->integer('htype_id')->nullable();
-            $table->string('sec_status')->nullable();
-            $table->text('details');
             $table->string('area')->nullable();
             $table->string('address')->nullable();
             $table->string('phone');
             $table->string('phone2')->nullable();
-            $table->string('img')->nullable();
             $table->integer('status');
-            $table->string('comment')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->integer('assigned_by')->nullable();
-            $table->integer('completed_by')->nullable();
+            $table->integer('user_id')->nullable();
             $table->integer('confirmed_by')->nullable();
             $table->timestamps();
         });
@@ -43,6 +39,6 @@ class CreateAdsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ads');
+        Schema::dropIfExists('volunteers');
     }
 }

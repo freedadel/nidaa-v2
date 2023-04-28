@@ -91,6 +91,7 @@ a{
 		admin = "متطوع"
 		//swal(phone, address+" - "+details, msg);
 
+		
 		swal(name+" - "+bio+" - "+admin+" - "+phone, {
 		buttons: {
 			cancel: "اغلاق",

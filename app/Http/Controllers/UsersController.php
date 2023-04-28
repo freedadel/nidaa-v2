@@ -103,6 +103,12 @@ class UsersController extends Controller
         return view('admin.users.edit')->with('user', $user);
     }
 
+    public function myedit()
+    {
+        $user = User::findorFail(auth()->user()->id);
+        return view('admin.users.myedit')->with('user', $user);
+    }
+
     /**
      * Update the specified resource in storage.
      *

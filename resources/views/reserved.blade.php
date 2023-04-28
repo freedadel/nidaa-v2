@@ -41,45 +41,32 @@ padding-left: .5rem !important;
 				<form class="login100-form validate-form" action="/">
 					@if (auth()->user()->admin==3)
 						<div class="row mr-1 ml-1">
-							<a href="{{route('reserved')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
+							<a href="{{route('reserved')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								المحجوزة
+									المحجوزة
 							</div>
 							</a>
 	
-							<a href="{{route('completed')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
+							<a href="{{route('needs',3)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
 								<div class="col-12" style="display: inline-block">
-								المكتملة
+									قيد الانتظار
 								</div>
 							</a>
 						</div>
 					@endif
-					@if (!empty($title))
+
 					<div class="row mr-1 ml-1">
-						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="#" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
 								 {{$title}} ({{count($ads)}} حالة)
 							</div>
 						</a>
 					</div>
-					@endif
-					
 					<br>
 					<div class="row">
 						<h6 style="margin: auto">مرحبا بك {{auth()->user()->name}}</h6>
 					</div>
-					<div class="row mr-1 ml-1 mt-3">
-						<a href="{{route('ads.searchCase')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث برقم الحالة
-							</div>
-						</a>
-						<a href="{{route('ads.search')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث المفصل
-							</div>
-						</a>
-					</div>
+					
 					
 					<input type="hidden" name="admin" id="admin" value="{{auth()->user()->admin}}">
 					@if(count($ads) > 0)
@@ -218,7 +205,7 @@ padding-left: .5rem !important;
 			value: "catch",
 			},
 			follow: {
-			text: "حجز",
+			text: "فك حجز",
 			value: "follow",
 			}
 		},
@@ -230,7 +217,7 @@ padding-left: .5rem !important;
 			break;
 
 			case "follow":
-			window.location.replace("/reserve/"+id);
+			window.location.replace("/reserve-back/"+id);
 			break;
 
 			default:

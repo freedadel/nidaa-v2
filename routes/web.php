@@ -33,8 +33,13 @@ Route::get('/type2', 'PublicController@type2')->name('type2');
 Route::get('/getByState/{id}', 'PublicController@getByState')->name('public.byState');
 Route::get('/getByHtype/{id}', 'PublicController@getByHtype')->name('public.byHtype');
 Route::get('/getByStatus/{id}', 'PublicController@getByStatus')->name('public.byStatus');
+
+Route::get('/Volunteer','PublicController@addVolunteer')->name('ads.volunteer');
+Route::post('/storeVolunteer','PublicController@storeVolunteer')->name('storeVolunteer');
+
 Route::get('/Add-new','PublicController@addNew')->name('ads.create');
 Route::post('/Ads-Save','PublicController@store')->name('ads.store');
+
 
 Route::post('/Result','PublicController@result')->name('Public.result');
 Route::get('/admin', 'AdminController@index');
@@ -55,16 +60,26 @@ Route::put('/States/publish/{id}', 'StatesController@publish')->name('States.pub
 Route::put('/users/reset-password/{id}', 'UsersController@resetPassword')->name('users.reset');
 Route::put('/users/makeUser/{id}', 'UsersController@makeUser')->name('pgCompany.makeUser');
 Route::put('/users/makeAdmin/{id}', 'UsersController@makeAdmin')->name('pgCompany.makeAdmin');
+Route::get('/volunteers-page', 'AdminController@volunteersPage')->name('volunteers');
+
+Route::get('/users-myedit', 'UsersController@myedit')->name('users.myedit');
 Auth::routes();
 
 Route::get('/home', 'AdminController@admin')->name('home');
+Route::get('/reserved', 'AdminController@reserved')->name('reserved');
+Route::get('/completed', 'AdminController@completed')->name('completed');
 Route::get('/needs/{id}', 'AdminController@needs')->name('needs');
 Route::get('/dashboard', 'HomeController@dashboard')->name('dashboard');
 Route::get('/public-dashboard', 'PublicController@dashboard')->name('public.dashboard');
 Route::get('/{id}', 'HomeController@edit')->name('edit');
 Route::get('/update-done/{id}', 'HomeController@done')->name('done');
 Route::get('/update-follow/{id}', 'HomeController@follow')->name('follow');
+Route::get('/archive-volunteer/{id}', 'HomeController@archive')->name('archive');
+Route::get('/reserve/{id}', 'HomeController@reserve')->name('reserve');
+Route::get('/reserve-back/{id}', 'HomeController@reserveBack')->name('reserveBack');
 Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
+
+
 
 Route::get('/getAdsByState/{id}', 'HomeController@getAdsByState')->name('getAdsByState');
 Route::get('/getAdsByHtype/{id}', 'HomeController@getAdsByHtype')->name('getAdsByHtype');

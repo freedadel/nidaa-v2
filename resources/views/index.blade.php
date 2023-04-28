@@ -78,7 +78,9 @@ padding-left: .5rem !important;
 					<div class="row mt-3 mb-2">
 						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث</a></h6>
 					</div>
-					<br>
+					<div class="row mt-3 mb-2">
+						<h6 style="margin: auto"><a href="{{route('ads.volunteer')}}">تريد التطوع؟ سجل الآن</a></h6>
+					</div>
 					<!--<div class="row">
 						<a href="{{route('login')}}" style="margin: auto">تسجيل الدخول</a>
 					</div>-->
@@ -99,7 +101,7 @@ padding-left: .5rem !important;
 							@else
 							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="-">
 							@endif
-							<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}">
+							<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}- ({{$ad->created_at}})">
 							<input type="hidden" name="address{{$ad->id}}" id="address{{$ad->id}}" value="{{$ad->address}}">
 							<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
 							<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
@@ -187,7 +189,26 @@ padding-left: .5rem !important;
 		msg = "warning"
 		else
 		msg = "success"
-		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
+		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg, {
+		buttons: {
+			cancel: "اغلاق",
+			catch: {
+			text: "مشاركة واتساب",
+			value: "catch",
+			}
+		},
+		})
+		.then((value) => {
+		switch (value) {
+
+			case "catch":
+			window.location.replace("whatsapp://send?text=حالة رقم:"+id+"%0A"+phone+"%0A"+state+" - "+area+" - "+address+"%0A"+"%0A"+" التصنيف: "+htype+"%0A"+"%0A"+details+"%0A"+"الوضع الأمني: "+sec_status+"%0A"+"%0A"+"ادخل وساعد بالبتقدر عليهو https://nidaasd.com");
+			break;
+		
+			default:
+			
+		}
+		});
 	}
 
 	function clos() {

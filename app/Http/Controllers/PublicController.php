@@ -6,6 +6,7 @@ use App\Ad;
 use App\Htype;
 use App\Locality;
 use App\State;
+use App\Volunteer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Validator;
 use SimpleXMLElement;
@@ -32,7 +33,7 @@ class PublicController extends Controller
     public function index()
     {
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',1)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',1)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
 
@@ -76,7 +77,7 @@ class PublicController extends Controller
     {
         $ads = Ad::orderBy('id','DESC')->get();
         $states = State::where('status',1)->get();
-        $htypes = Htype::where('status',1)->get();
+        $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
         return view('dashboard')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
     }
 
@@ -84,7 +85,7 @@ class PublicController extends Controller
     {
         $state = State::findorFail($id);
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',1)->where('state_id',$id)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('title',$state->name)->with('all_ads',$all_ads);
     }
 
@@ -92,7 +93,7 @@ class PublicController extends Controller
     {
         $htype = Htype::findorFail($id);
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',1)->where('htype_id',$id)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('title',$htype->name)->with('all_ads',$all_ads);
     }
 
@@ -100,7 +101,7 @@ class PublicController extends Controller
     {
         $status = $id==1?"قيد الانتظار":"مكتملة";
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',$id)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',$id)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('title',$status)->with('all_ads',$all_ads);
     }
     
@@ -108,30 +109,39 @@ class PublicController extends Controller
     {
         $ads = Ad::distinct()->get(['area']);
         $states = State::where('status',1)->get();
-        $htypes = Htype::where('status',1)->get();
+        $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
         return view('search-public')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
     }
 
     public function type1()
     {
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',1)->where('type',1)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',1)->where('type',1)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
     public function type2()
     {
         $all_ads = Ad::where('status',1)->orderBy('id','DESC')->get();
-        $ads = Ad::where('status',1)->where('type',2)->orderBy('id','DESC')->paginate(500);
+        $ads = Ad::where('status',1)->where('type',2)->orderBy('id','DESC')->paginate(50);
         return view('index')->with('ads',$ads)->with('all_ads',$all_ads);
     } 
 
     public function addNew()
     {
-        $htypes = Htype::where('status',1)->get();
+        $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
         $states = State::where('status',1)->get();
         $localities = Locality::where('status',1)->get();
         return view('add-new')->with('htypes',$htypes)->with('states',$states)->with('localities',$localities);
     } 
+
+    public function addVolunteer()
+    {
+        $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
+        $states = State::where('status',1)->get();
+        $localities = Locality::where('status',1)->get();
+        return view('volunteer')->with('htypes',$htypes)->with('states',$states)->with('localities',$localities);
+    } 
+
     public function store(Request $request)
     {
         if($request->result == $request->value1 + $request->value2)
@@ -176,5 +186,33 @@ class PublicController extends Controller
         }
 
       }
- 
+
+      public function storeVolunteer(Request $request)
+        {
+            if($request->result == $request->value1 + $request->value2)
+            {
+                    $volunteer = new Volunteer();
+                  
+                    $volunteer->name = $request->name;
+                    $volunteer->place = $request->place;
+                    $volunteer->country = $request->country;
+                    $volunteer->area = $request->area;
+                    $volunteer->address = $request->address;
+                    $volunteer->phone = $request->phone;
+                    $volunteer->phone2 = $request->phone2;
+                    $volunteer->state_id = $request->state;
+                    $volunteer->locality_id = $request->locality_id;
+                    $volunteer->htype_id = $request->htype;
+                    $volunteer->status = 1;
+                    $volunteer->user_id = 1;
+                    $volunteer->save();
+        
+                    session()->flash('success', 'شكرا لك، سيتم التواصل معك');
+
+                    return redirect(route('public.index'));
+                
+            }
+
+        }
+    
 }

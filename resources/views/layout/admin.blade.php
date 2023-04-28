@@ -52,9 +52,10 @@
 <body style="direction: rtl">
 	@yield('content')
     <div class="row col-12" style="margin: auto;text-align:center;background-color:#1f2832">
-        <a href="{{url()->previous()}}" class="col-3 btn btn-warning" style="margin: auto">رجوع</a>
-        <a href="{{route('admin.index')}}" class="col-5 btn btn-warning" style="margin: auto">الرئيسية</a>
-        <a href="#" class="col-3 btn btn-warning" style="margin: auto" data-toggle="modal" data-target="#logoutModal">تسجيل خروج</a>
+        <a href="{{url()->previous()}}" class="col-2 btn btn-warning" style="margin: auto">رجوع</a>
+        <a href="{{route('users.myedit')}}" class="col-3 btn btn-warning" style="margin: auto">بياناتي</a>
+        <a href="{{route('admin.index')}}" class="col-3 btn btn-warning" style="margin: auto">الرئيسية</a>
+        <a href="#" class="col-2 btn btn-warning" style="margin: auto" data-toggle="modal" data-target="#logoutModal">خروج</a>
     </div>
 
      <!-- Logout Modal-->
