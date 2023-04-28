@@ -57,7 +57,7 @@
 						@enderror
 					</div>
 					<div class="wrap-input100" id="state" style="">
-						<select class="input100 @error('state_id') is-invalid @enderror" type="text" name="state_id">
+						<select class="input100 @error('state_id') is-invalid @enderror" id="state_id" type="text" name="state_id">
 							<option value="null">اختر الولاية</option>
 							@foreach($states as $state)
 							<option value="{{$state->id}}">{{$state->name}}</option>
@@ -71,16 +71,13 @@
 							</span>
 						@enderror
 					</div>
-					<div class="wrap-input100" id="path" style="">
-						<select class="input100 @error('area') is-invalid @enderror" name="area">
-							<option value="null">اختر المنطقة</option>
-							@foreach($localities as $locality)
-							<option value="{{$locality->id}}">{{$locality->name}}</option>
-							@endforeach
-
+					<div class="wrap-input100 validate-input">
+						<select class="input100 @error('locality_id') is-invalid @enderror" id="locality_id" name="area" required>
+							<option value="">اختر المحلية</option>
+							
 						</select>
 						<span class="focus-input100"></span>
-						@error('area')
+						@error('locality_id')
 							<span class="invalid-feedback" role="alert">
 								<strong>{{ $message }}</strong>
 							</span>
@@ -100,19 +97,20 @@
 		</div>
 	</div>
 @endsection
-<script type="text/javascript">
-  var onloadCallback = function() {
-    alert("grecaptcha is ready!");
-  };
-</script>
-<script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit"
-    async defer>
-</script>
-
-<script type="text/javascript">
-	var onloadCallback = function() {
-	grecaptcha.render('html_element', {
-		'sitekey' : '6LeL-EgaAAAAAILWjtBQtk5lAv-AMeA575Cep8DZ'
+<script src="{{asset('js/jquery.min.js')}}"></script>
+<script>
+	$(document).ready(function(){
+		
+		$('#state_id').on('change', e => {
+    	$('#locality_id').empty()
+          $.ajax({
+              url: `/state/${document.getElementById('state_id').value}/localities`,
+              success: data => {
+                  data.localities.forEach(locality =>
+                      $('#locality_id').append(`<option value="${locality.id}">${locality.name}</option>`)
+                  )
+              }
+          })
+          });
 	});
-	};
-</script>
+	</script>

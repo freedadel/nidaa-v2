@@ -40,38 +40,15 @@ padding-left: .5rem !important;
 						<div class="col-6" style="margin:auto"><img src="{{asset('img/logo2.png')}}" alt="نداء" style="width:100%"></div> 
 					</div>-->
 					<div class="row mr-1 ml-1">
-						@if(count($all_ads->where('type',1)) > 0)
-						<a href="{{route('type1')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-danger border-3 shadow" style="height: 30px">
-						<div class="col-12" style="display: inline-block">
-							
-							 حوجة {{count($all_ads->where('type',1))}}
-						</div>
-						</a>
-						@else
 						<a href="{{route('public.index')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
 								 الكل 
 							</div>
 						</a>
-						@endif
-						@if(count($all_ads->where('type',2)) > 0)
-						<a href="{{route('type2')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-success border-3 shadow" style="height: 30px">
-						<div class="col-12" style="display: inline-block">
-							 وفرة {{count($all_ads->where('type',2))}}
-						</div>
-						</a>
-						@else
-						<a href="{{route('public.index')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+					
+						<a href="{{route('public.dashboard')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								 الكل 
-							</div>
-						</a>
-						@endif
-					</div>
-					<div class="row mr-1 ml-1">
-						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
-							<div class="col-12" style="display: inline-block">
-								 عرض الاحصائيات 
+								  الاحصائيات 
 							</div>
 						</a>
 					</div>
@@ -86,47 +63,47 @@ padding-left: .5rem !important;
 					class="login100-form-btn mb-2" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
 						+ اضافة نداء</a>
 					@if(count($ads) > 0)
-						@foreach ($ads as $index => $ad)
-						<a href="#" onclick='sw({{$ad->id}})'>
-							@if(!empty($ad->state_id))
-							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="{{$ad->state->name}}">
-							@else
-							<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
-							@endif
-							<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="{{$ad->area}}">
-							@if(!empty($ad->htype))
-							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
-							@else
-							<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="-">
-							@endif
-							<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}">
-							<input type="hidden" name="address{{$ad->id}}" id="address{{$ad->id}}" value="{{$ad->address}}">
-							<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
-							<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
-							<input type="hidden" name="phone{{$ad->id}}" id="phone{{$ad->id}}" value="{{$ad->phone}}">
-						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 @if($ad->type==1)border-danger @else border-success @endif border-3 shadow" style="height: 70px">
-							<div class="row mr-1 ml-1">
-								
-							<div class="col-9" style="display: inline-block">
-								
-								<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
-									{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif{{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}}
-									<br><span style="font-size: x-small;color:#1e7a16 !important">{{$ad->created_at->diffForHumans()}}</span><br>
-									<span style="font-size: x-small;color:#333333 !important">{{\Illuminate\Support\Str::limit($ad->created_at, 50, $end='...')}}</span>
-								</h6>
-								<h6 class="mt-1">
-									<span style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($ad->details, 50, $end='...')}}</span>
-								</h6>
-								
-							</div>
-						
-							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
-								<h6 class="text-dark mt-4" style="margin: auto">{{$ad->type==1?"حوجة":"وفرة"}}</h6>
-							</div>
-							</div>
+					@foreach ($ads as $index => $ad)
+					<a href="#" onclick='sw({{$ad->id}})'>
+						@if(!empty($ad->state_id))
+						<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="{{$ad->state->name}}">
+						@else
+						<input type="hidden" name="state{{$ad->id}}" id="state{{$ad->id}}" value="">
+						@endif
+						<input type="hidden" name="area{{$ad->id}}" id="area{{$ad->id}}" value="@if(!empty($ad->locality_id)) {{$ad->locality->name}} - @endif {{$ad->area}}">
+						@if(!empty($ad->htype))
+						<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="{{$ad->htype->name}}">
+						@else
+						<input type="hidden" name="htype{{$ad->id}}" id="htype{{$ad->id}}" value="-">
+						@endif
+						<input type="hidden" name="sec_status{{$ad->id}}" id="sec_status{{$ad->id}}" value="{{$ad->sec_status}}- ({{$ad->created_at}})">
+						<input type="hidden" name="address{{$ad->id}}" id="address{{$ad->id}}" value="{{$ad->address}}">
+						<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
+						<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
+						<input type="hidden" name="phone{{$ad->id}}" id="phone{{$ad->id}}" value="{{$ad->phone}}">
+					<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 @if($ad->type==1)border-danger @else border-success @endif border-3 shadow" style="height: 70px">
+						<div class="row mr-1 ml-1">
+							
+						<div class="col-9" style="display: inline-block">
+							
+							<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
+								{{$ad->id}}. @if(!empty($ad->state_id)){{\Illuminate\Support\Str::limit($ad->state->name, 30, $end='...')}} - @endif @if(!empty($ad->locality_id)) {{\Illuminate\Support\Str::limit($ad->locality->name, 50, $end='...')}} @else {{\Illuminate\Support\Str::limit($ad->area, 50, $end='...')}} @endif
+								<br><span style="font-size: x-small;color:#1e7a16 !important">{{$ad->created_at->diffForHumans()}}</span><br>
+								<span style="font-size: x-small;color:#333333 !important">{{\Illuminate\Support\Str::limit($ad->created_at, 50, $end='...')}}</span>
+							</h6>
+							<h6 class="mt-1">
+								<span style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($ad->details, 50, $end='...')}}</span>
+							</h6>
+							
 						</div>
+					
+						<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
+							<h6 class="text-dark mt-4" style="margin: auto">{{$ad->type==1?"حوجة":"وفرة"}}</h6>
+						</div>
+						</div>
+					</div>
 					</a>
-						@endforeach	
+					@endforeach	
 						
 					@else
 						<h4 class="text-center">عذراً لا يوجد ما بحثت عنه جرب البحث بطريقة اخرى</h4>
@@ -185,12 +162,34 @@ padding-left: .5rem !important;
 		msg = "warning"
 		else
 		msg = "success"
-		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg);
+		swal(phone, state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, msg, {
+		buttons: {
+			cancel: "اغلاق",
+			catch: {
+			text: "مشاركة واتساب",
+			value: "catch",
+			}
+		},
+		})
+		.then((value) => {
+		switch (value) {
+
+			case "catch":
+			window.location.replace("whatsapp://send?text=حالة رقم:"+id+"%0A"+phone+"%0A"+state+" - "+area+" - "+address+"%0A"+"%0A"+" التصنيف: "+htype+"%0A"+"%0A"+details+"%0A"+"الوضع الأمني: "+sec_status+"%0A"+"%0A"+"ادخل وساعد بالبتقدر عليهو https://nidaasd.com");
+			break;
+		
+			default:
+			
+		}
+		});
 	}
 
 	function clos() {
 		var details = document.getElementById('container');
 		details.style.display = "none";
 	}
+
+	
+	
 </script>	
 @endsection

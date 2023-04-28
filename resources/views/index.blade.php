@@ -127,7 +127,7 @@ padding-left: .5rem !important;
 							</div>
 							</div>
 						</div>
-					</a>
+						</a>
 						@endforeach	
 						<div class="row" style="margin: auto">
 							<div style="margin:auto;margin-top:20px">{{$ads->render()}}</div>

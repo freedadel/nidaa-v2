@@ -111,13 +111,8 @@ class PublicController extends Controller
     {
         $localities = Locality::where('status',1)->get();
         $states = State::where('status',1)->get();
-<<<<<<< HEAD
         $htypes = Htype::where('status',1)->orderBy('order_id','ASC')->get();
-        return view('search-public')->with('ads',$ads)->with('htypes',$htypes)->with('states',$states);
-=======
-        $htypes = Htype::where('status',1)->get();
         return view('search-public')->with('localities',$localities)->with('htypes',$htypes)->with('states',$states);
->>>>>>> f7285f5189064afcb20ad485ea124f5da6d8b54c
     }
 
     public function type1()
@@ -186,7 +181,7 @@ class PublicController extends Controller
                     $ads->user_id = 1;
                     $ads->save();
         
-                    session()->flash('success', 'تمت اضافة العميل بنجاح');
+                    session()->flash('success', 'تمت اضافة الحالة بنجاح');
 
                     return redirect(route('public.index'));
             
