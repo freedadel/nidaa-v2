@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Magbool - Dashboard</title>
+  <title>Nidaa - Dashboard</title>
 
   <!-- Custom fonts for this template-->
   <link href="{{asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -34,7 +34,7 @@
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-chart-pie"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">MAGBOOL</div>
+        <div class="sidebar-brand-text mx-3">Nidaa</div>
       </a>
 
       <!-- Divider -->
@@ -42,45 +42,14 @@
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="/admin">
+        <a class="nav-link" href="{{route('home')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></a>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+     
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        Interface
-      </div>
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Data</span>
-        </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="/Universities">Universites</a>
-            <a class="collapse-item" href="/Faculties">Faculties</a>
-            <a class="collapse-item" href="/Categories">Categories</a>
-            <a class="collapse-item" href="/Departments">Departments</a>
-            <a class="collapse-item" href="/States">States</a>
-          </div>
-        </div>
-      </li>
-
-	  
-	  <!-- Nav Item - Users Collapse Menu -->
-	  <li class="nav-item">
-        <a class="nav-link collapsed" href="/users">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Users</span>
-        </a>
-      </li>
+      
 	  
 	   
 
@@ -161,10 +130,6 @@
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="{{ route('users.edit', Auth::user()->id) }}">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Edit Profile
-                </a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                   <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -184,7 +149,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Magbool</span>
+            <span>Copyright &copy; Nidaa</span>
           </div>
         </div>
       </footer>

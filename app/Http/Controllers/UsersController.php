@@ -8,6 +8,7 @@ use Session;
 use File;
 
 use App\User;
+use App\Transaction;
 
 class UsersController extends Controller
 {
@@ -75,6 +76,15 @@ class UsersController extends Controller
         $user->admin = $request->admin;
         $user->password = Hash::make($request['password']);
         $user->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "اضافة مستخدم بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         session()->flash('success', 'تم اضافة المستخدم بنجاح');
 
         return redirect(route('admin.users',$request->admin));
@@ -153,6 +163,14 @@ class UsersController extends Controller
         $user->save();
         Session::flash('Success', 'تم تحديث البيانات');
 
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "تحديث بيانات ".$user->name." بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(route('admin.users',$user->admin));
     }
 
@@ -168,6 +186,15 @@ class UsersController extends Controller
         $user->status = 2;
         $user->save();
         Session::flash('success', 'تم حذف المستخدم');
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "حذف مستخدم بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(route('admin.users',$user->admin));
     }
     public function destroy($id)

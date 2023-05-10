@@ -69,17 +69,37 @@ padding-left: .5rem !important;
 						@endif
 					</div>
 					<div class="row mr-1 ml-1">
-						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="{{route('public.dashboard')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								 عرض الاحصائيات 
+								 الاحصائيات 
+							</div>
+						</a>
+					
+						<a href="{{route('public.partners')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 مبادرات أخرى 
 							</div>
 						</a>
 					</div>
-					<div class="row mt-3 mb-2">
-						<h6 style="margin: auto"><a href="{{route('ads.search')}}">اضغط هنا للبحث</a></h6>
+					<div class="row mr-1 ml-1">
+						<a href="{{route('ads.search')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 البحث 
+							</div>
+						</a>
+					
+						<a href="{{route('ads.volunteer')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+							<div class="col-12" style="display: inline-block">
+								 تطوع معنا
+							</div>
+						</a>
 					</div>
-					<div class="row mt-3 mb-2">
-						<h6 style="margin: auto"><a href="{{route('ads.volunteer')}}">تريد التطوع؟ سجل الآن</a></h6>
+					<div class="row mr-1 ml-1">
+					<a href="https://services.nidaasd.com" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-warning border-3 shadow" style="height: 30px">
+						<div class="col-12" style="display: inline-block">
+							 نداء خدمات
+						</div>
+					</a>
 					</div>
 					<!--<div class="row">
 						<a href="{{route('login')}}" style="margin: auto">تسجيل الدخول</a>

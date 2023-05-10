@@ -56,7 +56,7 @@ padding-left: .5rem !important;
 					@endif
 					@if (!empty($title))
 					<div class="row mr-1 ml-1">
-						<a href="{{route('public.dashboard')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="#" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
 								 {{$title}} ({{count($ads)}} حالة)
 							</div>
@@ -69,18 +69,20 @@ padding-left: .5rem !important;
 						<h6 style="margin: auto">مرحبا بك {{auth()->user()->name}}</h6>
 					</div>
 					<div class="row mr-1 ml-1 mt-3">
-						<a href="{{route('ads.searchCase')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="{{route('ads.searchCase')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث برقم الحالة
+								بحث بالرقم
 							</div>
 						</a>
-						<a href="{{route('ads.search')}}" class="card col-12 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="{{route('ads.search')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								اضغط هنا للبحث المفصل
+								بحث مفصل
 							</div>
 						</a>
 					</div>
-					
+					<a href="{{route('ads.create')}}"
+					class="login100-form-btn mb-2" style="font-family: Poppins-Regular;color:white !important;margin-top:5px">
+						+ اضافة نداء</a>
 					<input type="hidden" name="admin" id="admin" value="{{auth()->user()->admin}}">
 					@if(count($ads) > 0)
 						@foreach ($ads as $index => $ad)
@@ -101,6 +103,8 @@ padding-left: .5rem !important;
 							<input type="hidden" name="details{{$ad->id}}" id="details{{$ad->id}}" value="{{$ad->details}}">
 							<input type="hidden" name="type{{$ad->id}}" id="type{{$ad->id}}" value="{{$ad->type}}">
 							<input type="hidden" name="phone{{$ad->id}}" id="phone{{$ad->id}}" value="{{$ad->phone}}">
+							<input type="hidden" name="phone2{{$ad->id}}" id="phone2{{$ad->id}}" value="{{$ad->phone2}}">
+							<input type="hidden" name="comment{{$ad->id}}" id="comment{{$ad->id}}" value="{{$ad->comment}}">
 						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 @if($ad->type==1)border-danger @else border-success @endif border-3 shadow" style="height: 70px">
 							<div class="row mr-1 ml-1">
 								
@@ -164,6 +168,8 @@ padding-left: .5rem !important;
 		var details = document.getElementById('details'+id).value;
 		var type = document.getElementById('type'+id).value;
 		var phone = document.getElementById('phone'+id).value;
+		var phone2 = document.getElementById('phone2'+id).value;
+		var comment = document.getElementById('comment'+id).value;
 		if(type==1)
 		msg = "warning"
 		else
@@ -172,7 +178,7 @@ padding-left: .5rem !important;
 
 		if(admin != 3)
 		{
-		swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
+		swal(phone+" - "+phone2+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status+" (تعليق: "+comment+")", {
 		buttons: {
 			cancel: "اغلاق",
 			catch: {
@@ -210,7 +216,7 @@ padding-left: .5rem !important;
 		});
 	}
 		else{
-			swal(phone+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status, {
+			swal(phone+" - "+phone2+" - "+state+" - "+area+" - "+address+" - التصنيف: "+htype+" - "+details+" - الوضع الأمني: "+sec_status+" (تعليق: "+comment+")", {
 		buttons: {
 			cancel: "اغلاق",
 			catch: {
@@ -220,6 +226,10 @@ padding-left: .5rem !important;
 			follow: {
 			text: "حجز",
 			value: "follow",
+			},
+			comment: {
+			text: "تعليق",
+			value: "comment",
 			}
 		},
 		})
@@ -231,6 +241,15 @@ padding-left: .5rem !important;
 
 			case "follow":
 			window.location.replace("/reserve/"+id);
+			break;
+
+			case "comment":
+			swal("اكتب تعليقك", {
+				content: "input",
+				})
+				.then((value) => {
+					window.location.replace("/add-comment/"+id+"/"+value);
+				});
 			break;
 
 			default:

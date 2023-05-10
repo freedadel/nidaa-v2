@@ -49,7 +49,7 @@ a{
 						<div class="card mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 @if($user->type==1)border-danger @else border-success @endif border-3 shadow" style="height: 70px">
 							<div class="row mr-1 ml-1">
 								
-							<div class="col-12" style="display: inline-block">
+							<div class="col-9" style="display: inline-block">
 								<h6 style="font-size: small;color:#333333 !important;margin-top:2px">
 									{{$index+1}}. {{\Illuminate\Support\Str::limit($user->name, 50, $end='...')}}
 									<br><span style="font-size: x-small;color:#1e7a16 !important">{{$user->bio}}</span><br>
@@ -59,6 +59,10 @@ a{
 									<span style="font-size: x-small;color:#3b3c3d !important">{{\Illuminate\Support\Str::limit($user->email, 50, $end='...')}}</span>
 								</h6>
 								
+							</div>
+							<div class="col-3 text-center" style="display: inline-block;margin:auto;height:65">
+								<h6 class="text-dark mt-4" style="margin: auto;font-size:x-small">التغطية </h6>
+								<h6 class="text-dark" style="margin: auto;font-size:small">{{$user->admin==3?count($user->adsCompleted):count($user->adsDone)}}</h6>
 							</div>
 							</div>
 						</div>

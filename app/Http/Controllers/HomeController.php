@@ -7,6 +7,7 @@ use App\Ad;
 use App\State;
 use App\Htype;
 use App\Volunteer;
+use App\Transaction;
 
 class HomeController extends Controller
 {
@@ -86,6 +87,15 @@ class HomeController extends Controller
         
         $ad->updated_by = auth()->user()->id;
         $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "اكمال او تأكيد حالة بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(route('needs',$old));
     } 
     public function follow($id)
@@ -95,6 +105,34 @@ class HomeController extends Controller
         $ad->assigned_by = auth()->user()->id;
         $ad->status = 3;
         $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "اسناد حالة للمتطوعين بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
+        return redirect(url()->previous());
+    } 
+
+    public function comment($id,$comment)
+    {
+        $ad = Ad::findorFail($id);
+        $ad->comment =$comment."- بواسطة:".auth()->user()->name;
+        $ad->assigned_by = auth()->user()->id;
+        $ad->status = 3;
+        $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "تعليق على حالة بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(url()->previous());
     } 
 
@@ -105,6 +143,15 @@ class HomeController extends Controller
         $ad->updated_by = auth()->user()->id;
         $ad->status = 5;
         $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "حجز حالة بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(url()->previous());
     }
     
@@ -115,6 +162,15 @@ class HomeController extends Controller
         $ad->updated_by = auth()->user()->id;
         $ad->status = 3;
         $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "فك حجز حالة بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(url()->previous());
     }
 
@@ -125,6 +181,15 @@ class HomeController extends Controller
         $vol->confirmed_by = auth()->user()->id;
         $vol->status = 2;
         $vol->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "مراجعة طلب تطوع بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
         return redirect(url()->previous());
     } 
 
@@ -134,6 +199,16 @@ class HomeController extends Controller
         $ad->comment ="تمت المتابعة";
         $ad->updated_by = auth()->user()->id;
         $ad->save();
+
+        //****** Add Transaction ********** */
+        $trans = new Transaction();
+        $trans->details = "متابعة حالة بواسطة ".auth()->user()->name;
+        $trans->status = 1;
+        $trans->user_id = auth()->user()->id;
+        $trans->save();
+        //********************************* */
+
+
         return redirect(route('home'));
     }
 
@@ -173,6 +248,14 @@ class HomeController extends Controller
                     $ads->phone = $request->phone;
                     $ads->updated_by = auth()->user()->id;
                     $ads->save();
+
+                    //****** Add Transaction ********** */
+                    $trans = new Transaction();
+                    $trans->details = "تحديث بيانات حالة بواسطة ".auth()->user()->name;
+                    $trans->status = 1;
+                    $trans->user_id = auth()->user()->id;
+                    $trans->save();
+                    //********************************* */
         
                     return redirect(route('home'));
             

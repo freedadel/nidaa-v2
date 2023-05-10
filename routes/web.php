@@ -17,6 +17,9 @@ Route::get('/...', 'AdminController@admin')->name('admin.index');
 Route::get('/admin-users/{id}', 'AdminController@users')->name('admin.users');
 Route::get('/users-edit/{id}', 'UsersController@edit')->name('admin.edit');
 Route::get('/users-delete/{id}', 'UsersController@delete')->name('admin.delete');
+Route::get('/all-data', 'AdminController@alldata')->name('alldata');
+
+Route::get('/admin-transactions', 'AdminController@transactions')->name('transactions');
 
 Route::get('/searchCase', 'HomeController@searchCase')->name('ads.searchCase');
 Route::post('/searchResult', 'HomeController@searchResult')->name('ads.searchResult');
@@ -33,6 +36,11 @@ Route::get('/type2', 'PublicController@type2')->name('type2');
 Route::get('/getByState/{id}', 'PublicController@getByState')->name('public.byState');
 Route::get('/getByHtype/{id}', 'PublicController@getByHtype')->name('public.byHtype');
 Route::get('/getByStatus/{id}', 'PublicController@getByStatus')->name('public.byStatus');
+
+Route::get('/public-partners', 'PublicController@partners')->name('public.partners');
+Route::get('/partners-create', 'PublicController@AddPartners')->name('partners-create');
+Route::post('/store-partners', 'PublicController@StorePartners')->name('store-partners');
+Route::resource('/partners', 'PartnersController');
 
 Route::get('/Volunteer','PublicController@addVolunteer')->name('ads.volunteer');
 Route::post('/storeVolunteer','PublicController@storeVolunteer')->name('storeVolunteer');
@@ -76,6 +84,7 @@ Route::get('/update-done/{id}', 'HomeController@done')->name('done');
 Route::get('/update-follow/{id}', 'HomeController@follow')->name('follow');
 Route::get('/archive-volunteer/{id}', 'HomeController@archive')->name('archive');
 Route::get('/reserve/{id}', 'HomeController@reserve')->name('reserve');
+Route::get('/add-comment/{id}/{comment}', 'HomeController@comment')->name('comment');
 Route::get('/reserve-back/{id}', 'HomeController@reserveBack')->name('reserveBack');
 Route::post('/update/{id}', 'HomeController@update')->name('ads.update');
 

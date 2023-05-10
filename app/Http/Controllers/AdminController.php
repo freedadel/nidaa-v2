@@ -9,6 +9,7 @@ use App\User;
 use App\Volunteer;
 use Illuminate\Contracts\Session\Session;
 use Illuminate\Http\Request;
+use App\Transaction;
 
 class AdminController extends Controller
 {
@@ -28,6 +29,12 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+
+    public function alldata()
+    {
+        $ads = Ad::orderBy('id','DESC')->get();
+        return view('admin.index')->with('ads',$ads);
+    }
 
     public function admin()
     {
@@ -79,7 +86,7 @@ class AdminController extends Controller
         }
         elseif(auth()->user()->admin == 3)
         {
-            $ads = Ad::where('status',3)->where('assigned_by',auth()->user()->user_id)->orderBy('id','DESC')->paginate(50);
+            $ads = Ad::where('status',3)->orderBy('id','DESC')->paginate(50);
             return view('index-admin')->with('ads',$ads)->with('title',"قيد الانتظار");
         }
     }
@@ -150,5 +157,19 @@ class AdminController extends Controller
         }
         elseif(auth()->user()->admin == 3)
             return redirect(route('needs',3));
+    }
+
+    public function transactions()
+    {
+        if(auth()->user()->email == "0921003398" || auth()->user()->email == "0923734194" || 
+							auth()->user()->email == "0920996316" || auth()->user()->email == "0110012620" ||
+							auth()->user()->email == "0925687117")
+        {
+            $transactions = Transaction::all();
+            return view('admin.transactions')->with('transactions',$transactions);
+        }
+        else{
+            return redirect(route('home'));
+        }
     }
 }

@@ -48,8 +48,12 @@ padding-left: .5rem !important;
 									{{count($users->where('admin',1))}} مشرفين 
 								</div>
 							</a>
-							@endif
-						@if(auth()->user()->admin == 1)
+							<a href="{{route('admin.users',2)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+								<div class="col-12" style="display: inline-block">
+									 {{count($users->where('admin',2))}} مشغلين 
+								</div>
+							</a>
+						@elseif(auth()->user()->admin == 1)
 						
 						<a href="{{route('admin.users',2)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
@@ -70,19 +74,26 @@ padding-left: .5rem !important;
 								 {{count($volunteers)}} طلبات تطوع 
 							</div>
 						</a>
+						
+						
+						@endif
 
-						<a href="{{route('admin.list',3)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						@if(auth()->user()->email == "0921003398" || auth()->user()->email == "0923734194" || 
+							auth()->user()->email == "0920996316" || auth()->user()->email == "0110012620" ||
+							auth()->user()->email == "0925687117")
+						<a href="{{route('transactions')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								 {{count($users->where('admin',2))}} احصائيات المشغلين 
+								 سجل العمليات 
 							</div>
 						</a>
-
-						<a href="{{route('admin.list',3)}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
+						<a href="{{route('alldata')}}" class="card col-6 mt-1 border-left-0 border-top-0 border-bottom-0 rounded-right-0 border-info border-3 shadow" style="height: 30px">
 							<div class="col-12" style="display: inline-block">
-								 {{count($users->where('admin',3))}} احصائيات المتطوعين 
+								 تصدير اكسل 
 							</div>
 						</a>
 						@endif
+
+
 					</div>
 
 					<div class="row col-12 mr-1 ml-1 mt-3">
